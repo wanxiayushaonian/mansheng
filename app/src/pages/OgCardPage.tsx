@@ -17,6 +17,7 @@ export default function OgCardPage() {
   if (!post) return null
   return (
     <div
+      data-og-card
       style={{
         width: 1200,
         height: 630,

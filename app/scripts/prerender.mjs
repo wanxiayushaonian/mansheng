@@ -171,13 +171,23 @@ async function capturePng(cdpPort, httpPort, route) {
       deviceScaleFactor: 1,
       mobile: false,
     })
-    // 等字体就绪 + 数据加载
+    // 等字体 + 分享卡渲染完成（防截到 loading 空白）
     await cdpCallRaw(ws, 'Runtime.evaluate', {
-      expression: 'document.fonts ? document.fonts.ready.then(() => 1) : 1',
+      expression: `Promise.all([
+        document.fonts ? document.fonts.ready : 1,
+        new Promise((ok) => {
+          if (document.querySelector('[data-og-card]')) return ok(1)
+          const ob = new MutationObserver(() => {
+            if (document.querySelector('[data-og-card]')) { ob.disconnect(); ok(1) }
+          })
+          ob.observe(document.body, { childList: true, subtree: true })
+          setTimeout(() => { ob.disconnect(); ok(1) }, 5000)
+        }),
+      ])`,
       awaitPromise: true,
       returnByValue: true,
     }).catch(() => {})
-    await new Promise((r) => setTimeout(r, 800))
+    await new Promise((r) => setTimeout(r, 400))
     const shot = await cdpCallRaw(ws, 'Page.captureScreenshot', { format: 'png' })
     if (!shot?.data) throw new Error(`captureScreenshot 无数据: ${JSON.stringify(shot).slice(0, 200)}`)
     return Buffer.from(shot.data, 'base64')
@@ -187,8 +197,8 @@ async function capturePng(cdpPort, httpPort, route) {
   }
 }
 
-/** 打开新标签页加载 route（带 BASE_PATH 前缀，与线上一致），等入场动画完成，返回页面 HTML */
-async function captureRoute(cdpPort, httpPort, route) {
+/** 打开新标签页加载 route（带 BASE_PATH 前缀，与线上一致），等动画与内容就绪，返回页面 HTML */
+async function captureRoute(cdpPort, httpPort, route, readySel) {
   const targetUrl = `http://127.0.0.1:${httpPort}${BASE_PREFIX}${route}`
   let target
   try {
@@ -201,15 +211,18 @@ async function captureRoute(cdpPort, httpPort, route) {
   try {
     const start = Date.now()
     let pending = -1
-    // 轮询：等 mount 动画把内联 opacity 从 0 同步到 1
-    while (pending !== 0 && Date.now() - start < ANIM_TIMEOUT_MS) {
+    let ready = !readySel
+    // 轮询：等 mount 动画同步完内联 opacity，且（若指定）内容选择器出现——防截到 loading 骨架
+    while ((pending !== 0 || !ready) && Date.now() - start < ANIM_TIMEOUT_MS) {
       await new Promise((r) => setTimeout(r, 400))
       try {
         const r = await cdpCall(ws, 'Runtime.evaluate', {
-          expression: PENDING_JS,
+          expression: `JSON.stringify({p: ${PENDING_JS}, r: ${readySel ? `!!document.querySelector('${readySel}')` : 'true'}})`,
           returnByValue: true,
         })
-        pending = r.result.value
+        const v = JSON.parse(r.result.value)
+        pending = v.p
+        ready = v.r
       } catch {
         /* 页面跳转中，下一轮重试 */
       }
@@ -243,7 +256,7 @@ async function main() {
     { route: '/about', out: join(DIST, 'about/index.html') },
     ...graph.nodes
       .filter((n) => n.exists && safeSegment(n.id))
-      .map((n) => ({ route: `/p/${encodeURIComponent(n.id)}`, out: join(DIST, 'p', n.id, 'index.html') })),
+      .map((n) => ({ route: `/p/${encodeURIComponent(n.id)}`, out: join(DIST, 'p', n.id, 'index.html'), ready: '.post-body' })),
     ...graph.tags
       .map((t) => t.name)
       .filter(safeSegment)
@@ -262,7 +275,7 @@ async function main() {
   try {
     const httpPort = server.address().port
     for (const r of routes) {
-      const html = await captureRoute(chromeProc.port, httpPort, r.route)
+      const html = await captureRoute(chromeProc.port, httpPort, r.route, r.ready)
       await mkdir(dirname(r.out), { recursive: true })
       await writeFile(r.out, html)
       console.log(`  ✓ ${r.route} → dist/${r.out.slice(DIST.length + 1)}`)
