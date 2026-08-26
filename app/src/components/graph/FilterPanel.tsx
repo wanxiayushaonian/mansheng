@@ -46,6 +46,7 @@ export default function FilterPanel({
 }) {
   const graph = useGraphStore((s) => s.graph)
   const filters = useGraphStore((s) => s.filters)
+  const readMap = useGraphStore((s) => s.readMap)
   const { toggleTag, clearTags, toggleType, setHideWeakEdges, setHideGhost } = useGraphStore()
   const [open, setOpen] = useState(() => window.innerWidth >= 1200)
 
@@ -58,6 +59,8 @@ export default function FilterPanel({
 
   if (!graph) return null
   const totalNodes = graph.nodes.length
+  const nodeIds = new Set(graph.nodes.filter((n) => n.exists).map((n) => n.id))
+  const readCount = Object.keys(readMap).filter((id) => nodeIds.has(id)).length
 
   return (
     <>
@@ -140,7 +143,7 @@ export default function FilterPanel({
             </div>
 
             <div className="mt-3 pt-2 border-t border-line text-xs text-ink-3 font-mono-jb">
-              当前显示 {visibleCount} / {totalNodes} 节点 · {visibleEdgeCount} 边
+              当前显示 {visibleCount} / {totalNodes} 节点 · {visibleEdgeCount} 边 · 已读 {readCount}
             </div>
           </motion.aside>
         )}

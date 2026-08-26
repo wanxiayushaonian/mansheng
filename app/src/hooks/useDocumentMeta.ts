@@ -17,19 +17,20 @@ interface DocumentMeta {
   title?: string
   /** 页面描述（同时写入 description 与 og:description） */
   description?: string
+  /** og:image 路径（BASE_URL 下的相对路径，如 og/<id>.png）；缺省用全站封面 */
+  image?: string
 }
 
 /** 每路由设置 document.title / description / og 标签 */
-export function useDocumentMeta({ title, description }: DocumentMeta) {
+export function useDocumentMeta({ title, description, image }: DocumentMeta) {
   useEffect(() => {
     const fullTitle = title ? `${title} · ${SITE_NAME}` : `${SITE_NAME} · 图节点博客`
     document.title = fullTitle
     upsertMeta('property', 'og:title', fullTitle)
-    // og:image 是静态 meta 无法被子路径构建改写，运行时补齐
-    upsertMeta('property', 'og:image', `${import.meta.env.BASE_URL}og-cover.png`)
+    upsertMeta('property', 'og:image', `${import.meta.env.BASE_URL}${image ?? 'og-cover.png'}`)
     if (description) {
       upsertMeta('name', 'description', description)
       upsertMeta('property', 'og:description', description)
     }
-  }, [title, description])
+  }, [title, description, image])
 }

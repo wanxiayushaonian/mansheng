@@ -12,6 +12,7 @@ import {
 } from './chrome'
 import type { GraphData, GraphNode, TagInfo } from './chrome'
 import { useDocumentMeta } from '@/hooks/useDocumentMeta'
+import { useGraphStore } from '@/store'
 import { useEffect } from 'react'
 
 const EASE: [number, number, number, number] = [0.22, 0.8, 0.32, 1]
@@ -297,6 +298,7 @@ function PostCard({
   currentTag: string
 }) {
   const navigate = useNavigate()
+  const read = useGraphStore((s) => !!s.readMap[node.id])
   const barH = 8 + Math.min(node.degree * 3, 28)
   const barColor = nodeColor(node)
 
@@ -345,7 +347,7 @@ function PostCard({
       </div>
       <h3
         className="mt-2 line-clamp-2 text-[1.125rem] font-semibold leading-snug hover:text-[#A45A3C]"
-        style={{ fontFamily: '"Noto Serif SC",serif', color: C.ink }}
+        style={{ fontFamily: '"Noto Serif SC",serif', color: read ? C.ink3 : C.ink }}
       >
         {node.title}
       </h3>

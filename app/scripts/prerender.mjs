@@ -138,6 +138,55 @@ function connectWs(url) {
 // 入场动画未完成的元素数（排除 React Flow 故意隐藏的连接点 Handle）
 const PENDING_JS = `[...document.querySelectorAll('[style]')].filter(el => el.style.opacity === '0' && !el.classList.contains('react-flow__handle')).length`
 
+let msgId2 = 0
+function cdpCallRaw(ws, method, params = {}) {
+  return new Promise((res, rej) => {
+    const id = ++msgId2
+    const onMsg = (ev) => {
+      const m = JSON.parse(ev.data)
+      if (m.id === id) {
+        ws.removeEventListener('message', onMsg)
+        m.error ? rej(new Error(m.error.message)) : res(m.result)
+      }
+    }
+    ws.addEventListener('message', onMsg)
+    ws.send(JSON.stringify({ id, method, params }))
+  })
+}
+
+/** 打开 /og/:id，按 1200×630 视口截图，返回 PNG buffer */
+async function capturePng(cdpPort, httpPort, route) {
+  const targetUrl = `http://127.0.0.1:${httpPort}${BASE_PREFIX}${route}`
+  let target
+  try {
+    target = await (await fetch(`http://127.0.0.1:${cdpPort}/json/new?${encodeURIComponent(targetUrl)}`, { method: 'PUT' })).json()
+  } catch {
+    target = await (await fetch(`http://127.0.0.1:${cdpPort}/json/new?${encodeURIComponent(targetUrl)}`)).json()
+  }
+  const ws = await connectWs(target.webSocketDebuggerUrl)
+  try {
+    await cdpCallRaw(ws, 'Emulation.setDeviceMetricsOverride', {
+      width: 1200,
+      height: 630,
+      deviceScaleFactor: 1,
+      mobile: false,
+    })
+    // 等字体就绪 + 数据加载
+    await cdpCallRaw(ws, 'Runtime.evaluate', {
+      expression: 'document.fonts ? document.fonts.ready.then(() => 1) : 1',
+      awaitPromise: true,
+      returnByValue: true,
+    }).catch(() => {})
+    await new Promise((r) => setTimeout(r, 800))
+    const shot = await cdpCallRaw(ws, 'Page.captureScreenshot', { format: 'png' })
+    if (!shot?.data) throw new Error(`captureScreenshot 无数据: ${JSON.stringify(shot).slice(0, 200)}`)
+    return Buffer.from(shot.data, 'base64')
+  } finally {
+    ws.close()
+    fetch(`http://127.0.0.1:${cdpPort}/json/close/${target.id}`).catch(() => {})
+  }
+}
+
 /** 打开新标签页加载 route（带 BASE_PATH 前缀，与线上一致），等入场动画完成，返回页面 HTML */
 async function captureRoute(cdpPort, httpPort, route) {
   const targetUrl = `http://127.0.0.1:${httpPort}${BASE_PREFIX}${route}`
@@ -220,6 +269,21 @@ async function main() {
     }
     // 404 页（GitHub Pages 等托管用）：复用首页快照
     await copyFile(join(DIST, 'index.html'), join(DIST, '404.html'))
+
+    // og:image：每篇成文文章截 1200×630 分享卡 → dist/og/<id>.png
+    await mkdir(join(DIST, 'og'), { recursive: true })
+    const ogPosts = graph.nodes.filter((x) => x.exists && safeSegment(x.id))
+    let ogOk = 0
+    for (const n of ogPosts) {
+      try {
+        const png = await capturePng(chromeProc.port, httpPort, `/og/${encodeURIComponent(n.id)}`)
+        await writeFile(join(DIST, 'og', `${n.id}.png`), png)
+        ogOk++
+      } catch (e) {
+        console.warn(`  ✗ og ${n.id}: ${e.message}`)
+      }
+    }
+    console.log(`prerender: og 分享卡 ${ogOk}/${ogPosts.length} 张`)
 
     // sitemap.xml + robots.txt
     const urls = routes.map((r) => `  <url><loc>${SITE_URL}${r.route === '/' ? '/' : r.route}</loc></url>`)

@@ -13,6 +13,8 @@ export interface GardenNodeRFData extends Record<string, unknown> {
   dimmed: number
   highlighted: boolean
   focused: boolean
+  /** 已读：圆点去饱和 + 标签变淡 */
+  read: boolean
 }
 
 export type GardenNodeType = Node<GardenNodeRFData, 'garden'>
@@ -69,7 +71,7 @@ function HoverCard({ node }: { node: GraphNodeData }) {
 }
 
 function GardenNodeInner({ data, selected }: NodeProps<GardenNodeType>) {
-  const { node, dimmed, highlighted, focused } = data
+  const { node, dimmed, highlighted, focused, read } = data
   const { zoom } = useViewport()
   const setHoverId = useGraphStore((s) => s.setHover)
   const [hover, setHover] = useState(false)
@@ -140,7 +142,11 @@ function GardenNodeInner({ data, selected }: NodeProps<GardenNodeType>) {
           width: size,
           height: size,
           borderRadius: '50%',
-          background: isGhost ? 'transparent' : `color-mix(in srgb, ${color} 88%, white)`,
+          background: isGhost
+            ? 'transparent'
+            : read
+              ? 'color-mix(in srgb, ' + color + ' 40%, #EFE9DE)'
+              : 'color-mix(in srgb, ' + color + ' 88%, white)',
           border: isGhost ? '1.5px dashed #A39A8A' : 'none',
           boxShadow: ring,
           cursor: isGhost ? 'help' : 'pointer',
@@ -149,7 +155,10 @@ function GardenNodeInner({ data, selected }: NodeProps<GardenNodeType>) {
       {showLabel && (
         <div
           className="gnode__label absolute top-full mt-1 text-center text-xs font-medium text-ink whitespace-nowrap"
-          style={{ letterSpacing: '0.04em', color: isGhost ? '#8B8375' : undefined }}
+          style={{
+            letterSpacing: '0.04em',
+            color: isGhost || read ? '#8B8375' : undefined,
+          }}
         >
           {node.title.length > 12 ? `${node.title.slice(0, 12)}…` : node.title}
           {showDate && node.date && (

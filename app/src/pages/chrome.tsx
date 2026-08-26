@@ -445,4 +445,15 @@ export function formatDate(d: string) {
   return d || ''
 }
 
+/** html → 纯文本：去标签 + 常见实体解码（摘要 / meta description / og 卡共用） */
+export function htmlToText(html: string): string {
+  return html
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&amp;/g, '&')
+}
+
 export { useNavigate }

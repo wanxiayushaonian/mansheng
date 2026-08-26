@@ -22,12 +22,31 @@ export interface GhostToast {
   title: string
 }
 
+/** localStorage 读写已读记录（postId → 首次读完时间戳） */
+const READ_KEY = 'mansheng.read'
+function loadReadMap(): Record<string, number> {
+  try {
+    return JSON.parse(localStorage.getItem(READ_KEY) ?? '{}') as Record<string, number>
+  } catch {
+    return {}
+  }
+}
+function saveReadMap(map: Record<string, number>) {
+  try {
+    localStorage.setItem(READ_KEY, JSON.stringify(map))
+  } catch {
+    /* 配额满 / 隐私模式：内存态仍有效 */
+  }
+}
+
 interface GraphState {
   graph: GraphData | null
   loading: boolean
   error: string | null
   /** 递增计数：变更触发 useGraph 重新 fetch（错误重试用） */
   reloadNonce: number
+  /** 已读文章（持久化到 localStorage） */
+  readMap: Record<string, number>
 
   filters: Filters
   /** 聚焦节点 id（P1 聚焦模式） */
@@ -47,6 +66,7 @@ interface GraphState {
   setError: (e: string | null) => void
   /** 清除错误并触发重新加载 */
   reload: () => void
+  markRead: (id: string) => void
 
   toggleTag: (t: string) => void
   clearTags: () => void
@@ -69,6 +89,7 @@ export const useGraphStore = create<GraphState>((set) => ({
   loading: false,
   error: null,
   reloadNonce: 0,
+  readMap: loadReadMap(),
 
   filters: { tags: [], typesOff: [], hideWeakEdges: false, hideGhost: false },
   focusId: null,
@@ -83,6 +104,13 @@ export const useGraphStore = create<GraphState>((set) => ({
   setLoading: (loading) => set({ loading }),
   setError: (error) => set({ error }),
   reload: () => set((s) => ({ error: null, loading: false, reloadNonce: s.reloadNonce + 1 })),
+  markRead: (id) =>
+    set((s) => {
+      if (s.readMap[id]) return s
+      const next = { ...s.readMap, [id]: Date.now() }
+      saveReadMap(next)
+      return { readMap: next }
+    }),
 
   toggleTag: (t) =>
     set((s) => ({

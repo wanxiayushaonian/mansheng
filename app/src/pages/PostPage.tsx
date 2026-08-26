@@ -8,11 +8,12 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { ArrowLeft, ArrowRight, Sprout, Network } from 'lucide-react'
 import {
   C, DiamondDivider, GhostHint, MiniGraph, PageChrome, PostSkeleton,
-  ReadingProgress, TagChip, fetchGraph, fetchPost, nodeColor, tagColor,
+  ReadingProgress, TagChip, fetchGraph, fetchPost, htmlToText, nodeColor, tagColor,
   useDelayedFlag, useGhostHint, useLenis,
 } from './chrome'
 import type { GraphData, Post } from './chrome'
 import { useDocumentMeta } from '@/hooks/useDocumentMeta'
+import { useGraphStore } from '@/store'
 
 const EASE: [number, number, number, number] = [0.22, 0.8, 0.32, 1]
 
@@ -62,9 +63,36 @@ export default function PostPage() {
   useDocumentMeta({
     title: post ? post.title : notFound ? `${id}（待写）` : undefined,
     description: post
-      ? post.html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 110)
+      ? htmlToText(post.html).replace(/\s+/g, ' ').trim().slice(0, 110)
       : undefined,
+    image: post ? `og/${encodeURIComponent(post.id)}.png` : undefined,
   })
+
+  const markRead = useGraphStore((s) => s.markRead)
+
+  // 驻留 5s 或滚动超过 60% 记为已读（点开就走不算）
+  useEffect(() => {
+    if (!post) return
+    let done = false
+    const onScroll = () => {
+      const el = document.documentElement
+      const max = el.scrollHeight - el.clientHeight
+      if (max <= 0 || el.scrollTop / max >= 0.6) mark()
+    }
+    const mark = () => {
+      if (done) return
+      done = true
+      markRead(post.id)
+      clearTimeout(timer)
+      window.removeEventListener('scroll', onScroll)
+    }
+    const timer = setTimeout(mark, 5000)
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => {
+      clearTimeout(timer)
+      window.removeEventListener('scroll', onScroll)
+    }
+  }, [post, markRead])
 
   const showSkeleton = useDelayedFlag(!!post || notFound)
 

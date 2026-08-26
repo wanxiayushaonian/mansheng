@@ -118,6 +118,7 @@ function GraphCanvas({ graph }: { graph: NonNullable<ReturnType<typeof useGraph>
     timelineDate,
     localMode,
     highlightId,
+    readMap,
     setFocus,
     setLocalMode,
     setHighlight,
@@ -178,9 +179,10 @@ function GraphCanvas({ graph }: { graph: NonNullable<ReturnType<typeof useGraph>
               : 0,
           highlighted: highlightId === n.id,
           focused: focusId === n.id,
+          read: !!readMap[n.id],
         },
       })),
-    [graph, isVisible, hoverSet, focusSet, highlightId, focusId],
+    [graph, isVisible, hoverSet, focusSet, highlightId, focusId, readMap],
   )
 
   const visibleIds = useMemo(() => new Set(rfNodes.map((n) => n.id)), [rfNodes])

@@ -297,6 +297,19 @@ ${feedEntries}
 </feed>
 `);
 
+// ---------- 7. 全文搜索索引（原始文档数组；minisearch 索引在前端构建） ----------
+// 分词规则与 src/lib/searchTokenize.ts 保持一致：CJK 单字+bigram，拉丁按词
+const searchDocs = feedPosts.map((n) => ({
+  id: n.id,
+  title: n.title,
+  type: n.type,
+  tags: n.tags,
+  date: n.date,
+  summary: toPlainText(n.body).slice(0, 160),
+  text: toPlainText(n.body).slice(0, 4000),
+}));
+await writeFile(`${OUT_DIR}/search-index.json`, JSON.stringify(searchDocs));
+
 const linkEdges = edges.filter((e) => e.kind === 'link').length;
 const tagEdges = edges.length - linkEdges;
 console.log(`nodes: ${graphNodes.length} (ghost: ${graphNodes.filter((n) => !n.exists).length})`);

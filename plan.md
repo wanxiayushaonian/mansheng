@@ -70,3 +70,9 @@
 - 补 RSS：build.mjs 生成 Atom 格式 public/rss.xml（Footer 死链接就此接通），Footer GitHub 链接指向真实仓库
 - CI：.github/workflows/deploy.yml，push master → build（SITE_URL=wanxiayushaonian.github.io/mansheng，runner 自带 Chrome 跑预渲染）→ actions/deploy-pages
 - 上线：Pages Source = GitHub Actions，首次部署成功，https://wanxiayushaonian.github.io/mansheng/ （首页/图谱/文章预渲染/RSS/sitemap 42 条均验证 200）
+
+## Stage 9 — 路线图功能（2026-08-27）
+
+- 全文搜索：build.mjs 生成 search-index.json（原始文档），前端 minisearch + CJK 单字/bigram 分词（src/lib/searchTokenize.ts，与构建端注释约定同步），SearchBox 升级——懒加载索引、正文片段 mark 高亮、种子节点标题兜底，成文结果直接进文章页
+- og:image：新增 /og/:id 分享卡路由（1200×630 品牌卡），prerender.mjs 以 CDP setDeviceMetricsOverride 截图 27 张 → dist/og/<id>.png；useDocumentMeta 支持 image 选项，文章页指向专属卡；htmlToText 统一实体解码
+- 已读标记：store readMap 持久化 localStorage（mansheng.read）；PostPage 驻留 5s 或滚动 60% 记已读；图谱已读节点去饱和（40% 混纸色）+ 标签页标题变淡；过滤面板显示已读计数
