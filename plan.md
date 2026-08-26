@@ -65,8 +65,8 @@
 
 ## Stage 8 — 仓库与部署（2026-08-27）
 
-- 仓库：git init -b master，首提交 `feat: init mansheng digital garden`，remote → github.com/wanxiayushaonian/mansheng
+- 仓库：git init -b master，首提交 `feat: init mansheng digital garden`，remote（SSH）→ github.com/wanxiayushaonian/mansheng
 - 子路径改造：`BASE_PATH`（默认 /mansheng/）贯穿 vite base / BrowserRouter basename / fetch BASE_URL / 纸纹资源迁 src/assets / build.mjs wikilink href / prerender 静态服务剥离前缀
 - 补 RSS：build.mjs 生成 Atom 格式 public/rss.xml（Footer 死链接就此接通），Footer GitHub 链接指向真实仓库
 - CI：.github/workflows/deploy.yml，push master → build（SITE_URL=wanxiayushaonian.github.io/mansheng，runner 自带 Chrome 跑预渲染）→ actions/deploy-pages
-- 待办：用户推送（需凭证）；GitHub Settings → Pages → Source 选 GitHub Actions
+- 上线：Pages Source = GitHub Actions，首次部署成功，https://wanxiayushaonian.github.io/mansheng/ （首页/图谱/文章预渲染/RSS/sitemap 42 条均验证 200）
