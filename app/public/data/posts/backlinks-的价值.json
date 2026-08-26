@@ -1,0 +1,66 @@
+{
+  "id": "backlinks-的价值",
+  "title": "Backlinks：列表式博客没有的那块拼图",
+  "type": "essay",
+  "tags": [
+    "知识管理",
+    "数字花园"
+  ],
+  "date": "2025-08-11",
+  "draft": false,
+  "html": "<p>传统博客的「相关文章」靠算法猜，backlinks 靠作者亲手链接——质量高一个数量级。构建时反向扫描 edges 即可得到，成本几乎为零。</p>\n<h2>实现</h2>\n<pre><code class=\"hljs language-js\"><span class=\"hljs-keyword\">for</span> (<span class=\"hljs-keyword\">const</span> e <span class=\"hljs-keyword\">of</span> edges) {\n  backlinks.<span class=\"hljs-title function_\">get</span>(e.<span class=\"hljs-property\">target</span>).<span class=\"hljs-title function_\">push</span>({ <span class=\"hljs-attr\">id</span>: e.<span class=\"hljs-property\">source</span>, <span class=\"hljs-attr\">context</span>: <span class=\"hljs-title function_\">extractContext</span>(e.<span class=\"hljs-property\">source</span>, e.<span class=\"hljs-property\">target</span>) });\n}\n</code></pre>\n<p>context 取引用处前后各 40 字的纯文本片段，读者不用点进去就知道「为什么被引用」。</p>\n<h2>对写作的反向影响</h2>\n<p>知道自己写的每句话都可能出现在别人的反链面板里，会让人更认真地写链接上下文。这是 <a class=\"wikilink wikilink--ghost\" data-target=\"双向链接的认知科学\" href=\"/mansheng/p/%E5%8F%8C%E5%90%91%E9%93%BE%E6%8E%A5%E7%9A%84%E8%AE%A4%E7%9F%A5%E7%A7%91%E5%AD%A6\">双向链接的认知科学</a> 里谈的「链接即承诺」。<a class=\"wikilink\" data-target=\"数字花园方法论\" href=\"/mansheng/p/%E6%95%B0%E5%AD%97%E8%8A%B1%E5%9B%AD%E6%96%B9%E6%B3%95%E8%AE%BA\">数字花园方法论</a> 把反链视为花园的小径——走得人多了，就成了路。入门概念可先读 <a class=\"wikilink\" data-target=\"知识图谱入门\" href=\"/mansheng/p/%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1%E5%85%A5%E9%97%A8\">知识图谱入门</a>。</p>\n",
+  "outgoing": [
+    {
+      "id": "双向链接的认知科学",
+      "title": "双向链接的认知科学",
+      "exists": false
+    },
+    {
+      "id": "数字花园方法论",
+      "title": "数字花园方法论：博客的第三种形态",
+      "exists": true
+    },
+    {
+      "id": "知识图谱入门",
+      "title": "知识图谱入门：从 triple 到个人知识库",
+      "exists": true
+    }
+  ],
+  "backlinks": [
+    {
+      "id": "obsidian-工作流",
+      "title": "我的 Obsidian 写作工作流",
+      "context": "vault 直接用 Obsidian 打开，写完 git push 即发布。整个工作流只有三个约定：文件名用英文 slug "
+    },
+    {
+      "id": "写作即思考",
+      "title": "写作即思考",
+      "context": "「我以为我懂了，直到我试图写下来。」写作不是记录思考，写作就是思考本身。模糊的想法在落成句子的过程中被迫清晰。 三个实践 1"
+    },
+    {
+      "id": "数字花园方法论",
+      "title": "数字花园方法论：博客的第三种形态",
+      "context": "博客是按时间排列的，维基是按主题排列的，数字花园是按关系生长的。它允许半成品存在：文章可以是常青的（持续修订），也可以是刚发"
+    },
+    {
+      "id": "时间轴可视化",
+      "title": "给花园加一条时间轴",
+      "context": "图视图回答了「文章之间如何关联」，时间轴回答「花园如何生长」。两者结合才能看到知识网络的生命周期。 实现思路 每篇 fron"
+    },
+    {
+      "id": "知识图谱入门",
+      "title": "知识图谱入门：从 triple 到个人知识库",
+      "context": "知识图谱的最小单元是三元组（subject, predicate, object）。个人博客其实就是一个简版图谱：文章是节点"
+    },
+    {
+      "id": "笔记原子化",
+      "title": "笔记原子化：多大才算一条笔记",
+      "context": "原子化的标准是：一条笔记只讲一件事，且标题能作为别的文章里的链接锚点自然出现。 检验方法 这条笔记能否被三篇不同主题的文章引"
+    },
+    {
+      "id": "阅读批注方法",
+      "title": "我的阅读批注方法：三层笔记",
+      "context": "读完记不住，是因为没有加工。我的批注分三层： 三层结构 1. 划线层 ：原文摘录，零加工，只做标记 2. 转述层 ：用自己的"
+    }
+  ]
+}

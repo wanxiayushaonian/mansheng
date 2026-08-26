@@ -1,0 +1,51 @@
+{
+  "id": "前端性能预算",
+  "title": "给博客定一份性能预算",
+  "type": "note",
+  "tags": [
+    "性能",
+    "前端"
+  ],
+  "date": "2026-01-08",
+  "draft": false,
+  "html": "<p>性能预算不是优化手段，是约束条件：定死上限，任何提交导致超限就必须 trade-off。</p>\n<h2>本站的预算</h2>\n<ul>\n<li>首屏 JS gzip 后 &lt; 150KB</li>\n<li>graph.json &lt; 200KB（千级节点时重新评估）</li>\n<li>LCP &lt; 2.5s（4G 节流）</li>\n</ul>\n<h2>执行方式</h2>\n<p>CI 里跑 bundlesize 检查，超了直接失败。拆分策略见 <a class=\"wikilink\" data-target=\"vite-构建优化\" href=\"/mansheng/p/vite-%E6%9E%84%E5%BB%BA%E4%BC%98%E5%8C%96\">vite-构建优化</a>。文章页按需 fetch 的 JSON 不计入首屏预算，但单篇要 &lt; 50KB。</p>\n<p>最大的敌人其实是第三方脚本——每加一个，用 <a class=\"wikilink\" data-target=\"react-19-新特性\" href=\"/mansheng/p/react-19-%E6%96%B0%E7%89%B9%E6%80%A7\">react-19-新特性</a> 的 use() 思路去延迟加载都不够，最好的优化是不加。CSS 层面的小技巧（比如 <a class=\"wikilink\" data-target=\"css-容器查询\" href=\"/mansheng/p/css-%E5%AE%B9%E5%99%A8%E6%9F%A5%E8%AF%A2\">css-容器查询</a> 减少 JS 计算）也计入收益。</p>\n",
+  "outgoing": [
+    {
+      "id": "vite-构建优化",
+      "title": "Vite 构建优化清单",
+      "exists": true
+    },
+    {
+      "id": "react-19-新特性",
+      "title": "React 19 里我真正用上的三个特性",
+      "exists": true
+    },
+    {
+      "id": "css-容器查询",
+      "title": "CSS 容器查询在图节点上的妙用",
+      "exists": true
+    }
+  ],
+  "backlinks": [
+    {
+      "id": "css-容器查询",
+      "title": "CSS 容器查询在图节点上的妙用",
+      "context": "的渲染尺寸变换 对老浏览器要降级（直接常显 label） 省下的 JS 也算进 前端性能预算 的收益里。这类「让浏览器干活」的思路，比任何框架技巧都保值。"
+    },
+    {
+      "id": "图可视化配色",
+      "title": "图可视化的配色纪律",
+      "context": "个通道各司其职。知识图谱入门 的可视化部分也是这套思路。配色系统的源头约束还是 前端性能预算：不用图片纹理，纯 CSS。"
+    },
+    {
+      "id": "服务端组件理解",
+      "title": "理解 React Server Components 的心智模型",
+      "context": "户端只取所需——这和 react 19 新特性 的 use 数据流是同一个哲学。前端性能预算 里首屏 < 150KB 的目标，本质也是 RSC 思想的静态版。 未来若迁到 Astr"
+    },
+    {
+      "id": "测试策略笔记",
+      "title": "内容站点的测试策略",
+      "context": "escript 类型体操 里的类型定义已经保证了形状正确。构建性能回归的监测归 前端性能预算 管。"
+    }
+  ]
+}

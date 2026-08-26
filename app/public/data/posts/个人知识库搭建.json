@@ -1,0 +1,30 @@
+{
+  "id": "个人知识库搭建",
+  "title": "搭建个人知识库的五个台阶",
+  "type": "post",
+  "tags": [
+    "知识管理",
+    "工作流"
+  ],
+  "date": "2026-03-01",
+  "draft": false,
+  "html": "<p>知识库不是软件问题，是习惯问题。我走过的五个台阶，供参考：</p>\n<h2>台阶</h2>\n<ol>\n<li><strong>收集</strong>：任何想法先丢进 inbox，不分类</li>\n<li><strong>整理</strong>：每周清空 inbox，归位或删除</li>\n<li><strong>链接</strong>：新笔记必须至少链一篇旧笔记，否则不放行</li>\n<li><strong>输出</strong>：笔记簇成熟后整理成公开文章</li>\n<li><strong>修剪</strong>：定期删减掉永远长不大的 stub</li>\n</ol>\n<h2>工具选型</h2>\n<p>Obsidian 胜出是因为本地 Markdown + wikilink 原生支持，迁移成本为零。具体日常见 <a class=\"wikilink\" data-target=\"obsidian-工作流\" href=\"/mansheng/p/obsidian-%E5%B7%A5%E4%BD%9C%E6%B5%81\">obsidian-工作流</a>，理念根基在 <a class=\"wikilink\" data-target=\"数字花园方法论\" href=\"/mansheng/p/%E6%95%B0%E5%AD%97%E8%8A%B1%E5%9B%AD%E6%96%B9%E6%B3%95%E8%AE%BA\">数字花园方法论</a>。</p>\n<p>最常见的失败模式：花三周搭建完美系统，然后不写。知识库的价值 = 笔记数量 × 链接密度 × 回访频率，三者有一个为零，全盘皆零。<a class=\"wikilink\" data-target=\"笔记原子化\" href=\"/mansheng/p/%E7%AC%94%E8%AE%B0%E5%8E%9F%E5%AD%90%E5%8C%96\">笔记原子化</a> 讲的拆分粒度，直接决定链接密度能不能做起来。</p>\n",
+  "outgoing": [
+    {
+      "id": "obsidian-工作流",
+      "title": "我的 Obsidian 写作工作流",
+      "exists": true
+    },
+    {
+      "id": "数字花园方法论",
+      "title": "数字花园方法论：博客的第三种形态",
+      "exists": true
+    },
+    {
+      "id": "笔记原子化",
+      "title": "笔记原子化：多大才算一条笔记",
+      "exists": true
+    }
+  ],
+  "backlinks": []
+}

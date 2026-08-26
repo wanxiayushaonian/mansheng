@@ -1,0 +1,30 @@
+{
+  "id": "时间轴可视化",
+  "title": "给花园加一条时间轴",
+  "type": "note",
+  "tags": [
+    "可视化",
+    "数字花园"
+  ],
+  "date": "2026-08-10",
+  "draft": false,
+  "html": "<p>图视图回答了「文章之间如何关联」，时间轴回答「花园如何生长」。两者结合才能看到知识网络的生命周期。</p>\n<h2>实现思路</h2>\n<ul>\n<li>每篇 frontmatter 有 date，构建时直接进 graph.json</li>\n<li>前端一个滑块：只显示 date &lt;= 当前值的节点，拖动即回放花园的生长史</li>\n<li>边的可见性跟随两端节点</li>\n</ul>\n<h2>意外收获</h2>\n<p>时间轴暴露了写作的「密集期」和「旱季」。我的旱季和项目上线周期完全重合——写作量是可被工作挤压的先行指标。<a class=\"wikilink\" data-target=\"backlinks-的价值\" href=\"/mansheng/p/backlinks-%E7%9A%84%E4%BB%B7%E5%80%BC\">backlinks-的价值</a> 提到的反链密度随时间增长，也能在这个视图里直观看到。</p>\n<p>坐标来自 <a class=\"wikilink\" data-target=\"d3-force-布局\" href=\"/mansheng/p/d3-force-%E5%B8%83%E5%B1%80\">d3-force-布局</a>，时间维度只是过滤，不动布局——否则会重蹈「每次交互图都重排」的覆辙。这延续了 <a class=\"wikilink\" data-target=\"数字花园方法论\" href=\"/mansheng/p/%E6%95%B0%E5%AD%97%E8%8A%B1%E5%9B%AD%E6%96%B9%E6%B3%95%E8%AE%BA\">数字花园方法论</a> 的思路：结构稳定，视角可变。</p>\n",
+  "outgoing": [
+    {
+      "id": "backlinks-的价值",
+      "title": "Backlinks：列表式博客没有的那块拼图",
+      "exists": true
+    },
+    {
+      "id": "d3-force-布局",
+      "title": "d3-force 力导向布局笔记",
+      "exists": true
+    },
+    {
+      "id": "数字花园方法论",
+      "title": "数字花园方法论：博客的第三种形态",
+      "exists": true
+    }
+  ],
+  "backlinks": []
+}

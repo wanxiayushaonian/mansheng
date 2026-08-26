@@ -1,0 +1,31 @@
+{
+  "id": "测试策略笔记",
+  "title": "内容站点的测试策略",
+  "type": "note",
+  "tags": [
+    "前端",
+    "工具链"
+  ],
+  "date": "2026-07-20",
+  "draft": false,
+  "html": "<p>内容站点的测试重点不在 UI 组件，而在构建脚本：数据契约错了，全站都是错的。</p>\n<h2>优先级</h2>\n<ol>\n<li><strong>build.mjs 的快照测试</strong>：固定 vault fixture，断言 graph.json 的节点数、边数、backlinks 结构</li>\n<li><strong>数据契约测试</strong>：每个 posts/<id>.json 必须有 html/outgoing/backlinks 字段</li>\n<li><strong>UI 只测交互关键路径</strong>：过滤面板、wikilink 跳转</li>\n</ol>\n<pre><code class=\"hljs language-js\"><span class=\"hljs-keyword\">const</span> graph = <span class=\"hljs-title class_\">JSON</span>.<span class=\"hljs-title function_\">parse</span>(<span class=\"hljs-keyword\">await</span> <span class=\"hljs-title function_\">readFile</span>(<span class=\"hljs-string\">&#x27;public/data/graph.json&#x27;</span>));\n<span class=\"hljs-title function_\">assert</span>(graph.<span class=\"hljs-property\">nodes</span>.<span class=\"hljs-property\">length</span> &gt;= <span class=\"hljs-number\">30</span>);\n<span class=\"hljs-title function_\">assert</span>(graph.<span class=\"hljs-property\">edges</span>.<span class=\"hljs-title function_\">some</span>(<span class=\"hljs-function\"><span class=\"hljs-params\">e</span> =&gt;</span> e.<span class=\"hljs-property\">kind</span> === <span class=\"hljs-string\">&#x27;tag&#x27;</span>));\n</code></pre>\n<h2>不测什么</h2>\n<p>不测 Markdown 渲染的像素级结果（交给 markdown-it 的上游测试），不测 d3-force 的具体坐标——布局是随机的，<a class=\"wikilink\" data-target=\"typescript-类型体操\" href=\"/mansheng/p/typescript-%E7%B1%BB%E5%9E%8B%E4%BD%93%E6%93%8D\">typescript-类型体操</a> 里的类型定义已经保证了形状正确。构建性能回归的监测归 <a class=\"wikilink\" data-target=\"前端性能预算\" href=\"/mansheng/p/%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD%E9%A2%84%E7%AE%97\">前端性能预算</a> 管。</p>\n",
+  "outgoing": [
+    {
+      "id": "typescript-类型体操",
+      "title": "克制地使用 TypeScript 类型体操",
+      "exists": true
+    },
+    {
+      "id": "前端性能预算",
+      "title": "给博客定一份性能预算",
+      "exists": true
+    }
+  ],
+  "backlinks": [
+    {
+      "id": "typescript-类型体操",
+      "title": "克制地使用 TypeScript 类型体操",
+      "context": "构，而不是加断言 react 19 新特性 的类型升级基本无感，好类型就该这样。测试策略笔记 里有个观点呼应：类型和测试是互补的安全网，谁也不是对方的替代品。"
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "id": "知识图谱入门",
+  "title": "知识图谱入门：从 triple 到个人知识库",
+  "type": "post",
+  "tags": [
+    "知识管理",
+    "可视化"
+  ],
+  "date": "2025-09-02",
+  "draft": false,
+  "html": "<p>知识图谱的最小单元是三元组（subject, predicate, object）。个人博客其实就是一个简版图谱：文章是节点，wikilink 是谓词为「引用」的边。</p>\n<h2>概念地图</h2>\n<ul>\n<li><strong>实体</strong>：文章、标签、占位节点</li>\n<li><strong>关系</strong>：link（强）与 tag 共现（弱）</li>\n<li><strong>属性</strong>：date、type、degree</li>\n</ul>\n<p>本站没有引入 RDF/SPARQL，JSON 足矣——<a class=\"wikilink\" data-target=\"图数据库选型\" href=\"/mansheng/p/%E5%9B%BE%E6%95%B0%E6%8D%AE%E5%BA%93%E9%80%89%E5%9E%8B\">图数据库选型</a> 讨论了什么时候才需要真正的图数据库。</p>\n<h2>可视化</h2>\n<p>把图谱画出来才有直觉。<a class=\"wikilink\" data-target=\"d3-force-布局\" href=\"/mansheng/p/d3-force-%E5%B8%83%E5%B1%80\">d3-force-布局</a> 负责坐标，前端用 React Flow 渲染。度（degree）映射节点大小，让读者一眼看到枢纽文章。<a class=\"wikilink\" data-target=\"backlinks-的价值\" href=\"/mansheng/p/backlinks-%E7%9A%84%E4%BB%B7%E5%80%BC\">backlinks-的价值</a> 是图谱思维在阅读端的最佳落点：没有图结构，就没有反链这个概念。</p>\n",
+  "outgoing": [
+    {
+      "id": "图数据库选型",
+      "title": "图数据库选型：Neo4j 还是什么都不用",
+      "exists": true
+    },
+    {
+      "id": "d3-force-布局",
+      "title": "d3-force 力导向布局笔记",
+      "exists": true
+    },
+    {
+      "id": "backlinks-的价值",
+      "title": "Backlinks：列表式博客没有的那块拼图",
+      "exists": true
+    }
+  ],
+  "backlinks": [
+    {
+      "id": "backlinks-的价值",
+      "title": "Backlinks：列表式博客没有的那块拼图",
+      "context": "。数字花园方法论 把反链视为花园的小径——走得人多了，就成了路。入门概念可先读 知识图谱入门。"
+    },
+    {
+      "id": "图可视化配色",
+      "title": "图可视化的配色纪律",
+      "context": "码 type、位置编码语义（d3 force 布局 的产物），三个通道各司其职。知识图谱入门 的可视化部分也是这套思路。配色系统的源头约束还是 前端性能预算：不用图片纹理，纯 CSS。"
+    },
+    {
+      "id": "图数据库选型",
+      "title": "图数据库选型：Neo4j 还是什么都不用",
+      "context": "只做「找某节点的邻居」和「按标签聚合」，邻接表足够。真正驱动我研究图数据库的是 知识图谱入门 里的多跳查询需求——「和我这篇文章隔两跳、且同标签的笔记有哪些」。布局层面的事见 d3 force 布局，与存"
+    }
+  ]
+}

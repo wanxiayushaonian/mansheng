@@ -1,0 +1,56 @@
+{
+  "id": "obsidian-工作流",
+  "title": "我的 Obsidian 写作工作流",
+  "type": "essay",
+  "tags": [
+    "知识管理",
+    "工作流"
+  ],
+  "date": "2025-05-08",
+  "draft": false,
+  "html": "<p>vault 直接用 Obsidian 打开，写完 <code>git push</code> 即发布。整个工作流只有三个约定：文件名用英文 slug 作 id、frontmatter 齐全、链接一律用双方括号语法。</p>\n<h2>日常节奏</h2>\n<ul>\n<li>早上打开 Daily Note，把零散想法记成一句话 stub</li>\n<li>stub 成熟后拆成独立笔记，链接回相关文章</li>\n<li>每周五扫一遍「未解析链接」——那些指向空白处的 <a class=\"wikilink wikilink--ghost\" data-target=\"增量式写作\" href=\"/mansheng/p/%E5%A2%9E%E9%87%8F%E5%BC%8F%E5%86%99%E4%BD%9C\">增量式写作</a> 式占位，就是下周的写作选题</li>\n</ul>\n<h2>与博客的关系</h2>\n<p>Obsidian 的图谱视图是写作时的导航，而本站发布后的图是读者的导航，两者同源但服务不同人群。<a class=\"wikilink\" data-target=\"数字花园方法论\" href=\"/mansheng/p/%E6%95%B0%E5%AD%97%E8%8A%B1%E5%9B%AD%E6%96%B9%E6%B3%95%E8%AE%BA\">数字花园方法论</a> 讲的正是这种「内容先行、结构自生」的思路。<a class=\"wikilink\" data-target=\"backlinks-的价值\" href=\"/mansheng/p/backlinks-%E7%9A%84%E4%BB%B7%E5%80%BC\">backlinks-的价值</a> 则解释了为什么我写作时几乎只看反链面板。</p>\n<p>工具本身不重要，重要的是 <a class=\"wikilink\" data-target=\"写作即思考\" href=\"/mansheng/p/%E5%86%99%E4%BD%9C%E5%8D%B3%E6%80%9D%E8%80%83\">写作即思考</a>：写不下来，说明还没想清楚。</p>\n",
+  "outgoing": [
+    {
+      "id": "增量式写作",
+      "title": "增量式写作",
+      "exists": false
+    },
+    {
+      "id": "数字花园方法论",
+      "title": "数字花园方法论：博客的第三种形态",
+      "exists": true
+    },
+    {
+      "id": "backlinks-的价值",
+      "title": "Backlinks：列表式博客没有的那块拼图",
+      "exists": true
+    },
+    {
+      "id": "写作即思考",
+      "title": "写作即思考",
+      "exists": true
+    }
+  ],
+  "backlinks": [
+    {
+      "id": "个人知识库搭建",
+      "title": "搭建个人知识库的五个台阶",
+      "context": "知识库不是软件问题，是习惯问题。我走过的五个台阶，供参考： 台阶 1. 收集 ：任何想法先丢进 inbox，不分类"
+    },
+    {
+      "id": "写作即思考",
+      "title": "写作即思考",
+      "context": "「我以为我懂了，直到我试图写下来。」写作不是记录思考，写作就是思考本身。模糊的想法在落成句子的过程中被迫清晰。 三"
+    },
+    {
+      "id": "数字花园方法论",
+      "title": "数字花园方法论：博客的第三种形态",
+      "context": "博客是按时间排列的，维基是按主题排列的，数字花园是按关系生长的。它允许半成品存在：文章可以是常青的（持续修订），也"
+    },
+    {
+      "id": "最小可行博客",
+      "title": "最小可行的图节点博客长什么样",
+      "context": "如果你想复刻本站，最小可行版本只需要五样东西： 清单 1. 一个 vault 目录，20 篇互相链接的 Markd"
+    }
+  ]
+}

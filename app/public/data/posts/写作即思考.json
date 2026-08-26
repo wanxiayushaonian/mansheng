@@ -1,0 +1,46 @@
+{
+  "id": "写作即思考",
+  "title": "写作即思考",
+  "type": "essay",
+  "tags": [
+    "写作",
+    "知识管理"
+  ],
+  "date": "2025-10-05",
+  "draft": false,
+  "html": "<p>「我以为我懂了，直到我试图写下来。」写作不是记录思考，写作就是思考本身。模糊的想法在落成句子的过程中被迫清晰。</p>\n<h2>三个实践</h2>\n<ol>\n<li><strong>先写结论</strong>。第一句话就给出判断，倒逼自己明确立场</li>\n<li><strong>为链接而写</strong>。写到某个概念时主动想「这和哪篇有关」，链接不上说明知识体系有缺口</li>\n<li><strong>允许烂尾</strong>。花园里 stub 是合法的，<a class=\"wikilink wikilink--ghost\" data-target=\"增量式写作\" href=\"/mansheng/p/%E5%A2%9E%E9%87%8F%E5%BC%8F%E5%86%99%E4%BD%9C\">增量式写作</a> 会让它慢慢长成</li>\n</ol>\n<h2>工具层面</h2>\n<p><a class=\"wikilink\" data-target=\"obsidian-工作流\" href=\"/mansheng/p/obsidian-%E5%B7%A5%E4%BD%9C%E6%B5%81\">obsidian-工作流</a> 里讲的 Daily Note 就是这个方法的载体。写不出来时换个动作：去读旧文的反链面板（见 <a class=\"wikilink\" data-target=\"backlinks-的价值\" href=\"/mansheng/p/backlinks-%E7%9A%84%E4%BB%B7%E5%80%BC\">backlinks-的价值</a>），常常会发现自己早就写过半个答案。</p>\n<p>写作是唯一不能被外包的思考。</p>\n",
+  "outgoing": [
+    {
+      "id": "增量式写作",
+      "title": "增量式写作",
+      "exists": false
+    },
+    {
+      "id": "obsidian-工作流",
+      "title": "我的 Obsidian 写作工作流",
+      "exists": true
+    },
+    {
+      "id": "backlinks-的价值",
+      "title": "Backlinks：列表式博客没有的那块拼图",
+      "exists": true
+    }
+  ],
+  "backlinks": [
+    {
+      "id": "obsidian-工作流",
+      "title": "我的 Obsidian 写作工作流",
+      "context": "s 的价值 则解释了为什么我写作时几乎只看反链面板。 工具本身不重要，重要的是 写作即思考：写不下来，说明还没想清楚。"
+    },
+    {
+      "id": "笔记原子化",
+      "title": "笔记原子化：多大才算一条笔记",
+      "context": "是 数字花园方法论 强调链接优先的原因——原子化 × 链接密度 = 网络价值。 写作即思考 的视角下，原子化还有一层好处：写 300 字的单点笔记没有心理门槛，想法的捕获"
+    },
+    {
+      "id": "阅读批注方法",
+      "title": "我的阅读批注方法：三层笔记",
+      "context": "一个反常识 批注不应该追求完整。一本书留下三条高质量连接层笔记，胜过三十条划线。写作即思考 在这里完全适用：写不出来的转述，就是没读懂的部分。 读技术文章时我额外加一层「"
+    }
+  ]
+}

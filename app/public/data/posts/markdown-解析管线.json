@@ -1,0 +1,61 @@
+{
+  "id": "markdown-解析管线",
+  "title": "Markdown 解析管线：从 .md 到 graph.json",
+  "type": "post",
+  "tags": [
+    "工具链",
+    "前端"
+  ],
+  "date": "2025-04-12",
+  "draft": false,
+  "html": "<p>构建脚本的核心是一条解析管线：扫描 vault/posts，用 unified 解析 frontmatter 和双方括号链接，产出节点、边和渲染数据。</p>\n<h2>管线结构</h2>\n<ol>\n<li><code>remark-parse</code> 把 md 解析成 AST</li>\n<li><code>remark-frontmatter</code> 识别 YAML 头，交给 js-yaml</li>\n<li><code>remark-wiki-link</code> 把 <code>&lt;a class=&quot;wikilink wikilink--ghost&quot; data-target=&quot;xxx&quot; href=&quot;/mansheng/p/xxx&quot;&gt;xxx&lt;/a&gt;</code> 解析成 wikiLink 节点</li>\n<li>遍历 AST 收集链接，生成边和占位节点</li>\n</ol>\n<p>正文 HTML 则单独用 markdown-it + highlight.js 渲染，AST 只负责关系抽取——关系与渲染解耦，这正是 <a class=\"wikilink\" data-target=\"unified-生态\" href=\"/mansheng/p/unified-%E7%94%9F%E6%80%81\">unified-生态</a> 的设计哲学。</p>\n<h2>取舍</h2>\n<p>没有用 MDX。文章内容是纯 Markdown，MDX 的组件能力对博客是过剩的，还会把写作端锁死在 React。详见 <a class=\"wikilink wikilink--ghost\" data-target=\"MDX-的取舍\" href=\"/mansheng/p/MDX-%E7%9A%84%E5%8F%96%E8%88%8D\">MDX-的取舍</a>。构建速度则交给 <a class=\"wikilink\" data-target=\"vite-构建优化\" href=\"/mansheng/p/vite-%E6%9E%84%E5%BB%BA%E4%BC%98%E5%8C%96\">vite-构建优化</a> 那篇讨论。</p>\n",
+  "outgoing": [
+    {
+      "id": "unified-生态",
+      "title": "unified 生态速览",
+      "exists": true
+    },
+    {
+      "id": "MDX-的取舍",
+      "title": "MDX-的取舍",
+      "exists": false
+    },
+    {
+      "id": "vite-构建优化",
+      "title": "Vite 构建优化清单",
+      "exists": true
+    }
+  ],
+  "backlinks": [
+    {
+      "id": "unified-生态",
+      "title": "unified 生态速览",
+      "context": "unified 是一套基于 AST 的内容处理框架：parse → transform → stringify。remark 管 Markdow"
+    },
+    {
+      "id": "vite-构建优化",
+      "title": "Vite 构建优化清单",
+      "context": "本站构建分两步： node build.mjs 生成数据层，再 vite build 。数据层是纯 Node 脚本，不进 Vite 管线，所以 "
+    },
+    {
+      "id": "zustand-状态管理",
+      "title": "为什么图视图的状态用 zustand",
+      "context": "图视图有过滤面板、focus 高亮、搜索定位，状态不少但结构扁平。Redux 太重，Context 会整树重渲染，zustand 正好。 用法 "
+    },
+    {
+      "id": "命令行工具集",
+      "title": "内容站维护者的命令行工具集",
+      "context": "维护一个 Markdown vault，几个 CLI 工具能省大量时间。 常用组合 ripgrep ：找链接、找标签、找失效引用 fd ：比 f"
+    },
+    {
+      "id": "增量构建实践",
+      "title": "增量构建实践：只重算变化的文章",
+      "context": "vault 到 500 篇后全量构建开始变慢。增量构建的核心是：以文件 mtime + 内容 hash 做缓存键，只重新解析变化的 Markdo"
+    },
+    {
+      "id": "最小可行博客",
+      "title": "最小可行的图节点博客长什么样",
+      "context": "如果你想复刻本站，最小可行版本只需要五样东西： 清单 1. 一个 vault 目录，20 篇互相链接的 Markdown 2. 一个 200 行"
+    }
+  ]
+}

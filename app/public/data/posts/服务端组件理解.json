@@ -1,0 +1,31 @@
+{
+  "id": "服务端组件理解",
+  "title": "理解 React Server Components 的心智模型",
+  "type": "post",
+  "tags": [
+    "React",
+    "前端"
+  ],
+  "date": "2026-07-02",
+  "draft": false,
+  "html": "<p>RSC 的核心不是「在服务端渲染」，而是「组件树分成两个世界」：服务端组件离数据近、零客户端 JS；客户端组件离交互近、按需水合。</p>\n<h2>一个判断框架</h2>\n<ul>\n<li>这段 UI 需要事件处理或浏览器 API 吗？→ 客户端组件</li>\n<li>只是数据的静态呈现？→ 留在服务端</li>\n<li>两者交界用 props 传可序列化数据，像 API 边界一样设计</li>\n</ul>\n<h2>与本站的关系</h2>\n<p>本站是纯静态 SPA，没用 RSC。但它的思想影响了数据层设计：构建时把能算的都算好（坐标、HTML、反链），客户端只取所需——这和 <a class=\"wikilink\" data-target=\"react-19-新特性\" href=\"/mansheng/p/react-19-%E6%96%B0%E7%89%B9%E6%80%A7\">react-19-新特性</a> 的 use() 数据流是同一个哲学。<a class=\"wikilink\" data-target=\"前端性能预算\" href=\"/mansheng/p/%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD%E9%A2%84%E7%AE%97\">前端性能预算</a> 里首屏 &lt; 150KB 的目标，本质也是 RSC 思想的静态版。</p>\n<p>未来若迁到 Astro，文章页变成纯静态 HTML、图视图做客户端孤岛，就是顺理成章的事。</p>\n",
+  "outgoing": [
+    {
+      "id": "react-19-新特性",
+      "title": "React 19 里我真正用上的三个特性",
+      "exists": true
+    },
+    {
+      "id": "前端性能预算",
+      "title": "给博客定一份性能预算",
+      "exists": true
+    }
+  ],
+  "backlinks": [
+    {
+      "id": "react-19-新特性",
+      "title": "React 19 里我真正用上的三个特性",
+      "context": "onents——本站是纯静态 SPA，没有服务端。RSC 的心智模型值得学（见 服务端组件理解），但别为用而用。状态层依然是 zustand 状态管理，React 19 没有改变客户端状态管理的基本格局。"
+    }
+  ]
+}

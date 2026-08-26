@@ -1,0 +1,36 @@
+{
+  "id": "图数据库选型",
+  "title": "图数据库选型：Neo4j 还是什么都不用",
+  "type": "note",
+  "tags": [
+    "图数据库",
+    "工具链"
+  ],
+  "date": "2025-09-20",
+  "draft": false,
+  "html": "<p>结论先行：百级节点的个人博客不需要图数据库。但当边查询变复杂（多跳邻居、最短路径、社区发现），内存邻接表就开始吃力。</p>\n<h2>候选对比</h2>\n<table>\n<thead>\n<tr>\n<th>方案</th>\n<th>适用规模</th>\n<th>备注</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>邻接表（JS 对象）</td>\n<td>&lt; 1k 节点</td>\n<td>本站现状</td>\n</tr>\n<tr>\n<td>SQLite + 边表</td>\n<td>&lt; 100k</td>\n<td>够用且零运维</td>\n</tr>\n<tr>\n<td>Neo4j</td>\n<td>任意</td>\n<td>Cypher 友好，运维重</td>\n</tr>\n<tr>\n<td>Kuzu</td>\n<td>嵌入式</td>\n<td>DuckDB 的图版，值得关注</td>\n</tr>\n</tbody>\n</table>\n<h2>判断标准</h2>\n<p>查询模式决定选型。本站只做「找某节点的邻居」和「按标签聚合」，邻接表足够。真正驱动我研究图数据库的是 <a class=\"wikilink\" data-target=\"知识图谱入门\" href=\"/mansheng/p/%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1%E5%85%A5%E9%97%A8\">知识图谱入门</a> 里的多跳查询需求——「和我这篇文章隔两跳、且同标签的笔记有哪些」。布局层面的事见 <a class=\"wikilink\" data-target=\"d3-force-布局\" href=\"/mansheng/p/d3-force-%E5%B8%83%E5%B1%80\">d3-force-布局</a>，与存储无关。</p>\n",
+  "outgoing": [
+    {
+      "id": "知识图谱入门",
+      "title": "知识图谱入门：从 triple 到个人知识库",
+      "exists": true
+    },
+    {
+      "id": "d3-force-布局",
+      "title": "d3-force 力导向布局笔记",
+      "exists": true
+    }
+  ],
+  "backlinks": [
+    {
+      "id": "d3-force-布局",
+      "title": "d3-force 力导向布局笔记",
+      "context": "解法：读旧 graph.json 坐标做初始值，新节点在质心附近随机落位。这和 图数据库选型 无关，但对图的可读性比选型重要得多。"
+    },
+    {
+      "id": "知识图谱入门",
+      "title": "知识图谱入门：从 triple 到个人知识库",
+      "context": "、type、degree 本站没有引入 RDF/SPARQL，JSON 足矣——图数据库选型 讨论了什么时候才需要真正的图数据库。 可视化 把图谱画出来才有直觉。d3 force 布局 负责坐标，前端"
+    }
+  ]
+}

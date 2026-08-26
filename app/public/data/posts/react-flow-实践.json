@@ -1,0 +1,46 @@
+{
+  "id": "react-flow-实践",
+  "title": "React Flow 实战：把博客画成一张图",
+  "type": "post",
+  "tags": [
+    "前端",
+    "可视化"
+  ],
+  "date": "2025-02-10",
+  "draft": false,
+  "html": "<p>React Flow（@xyflow/react）是目前 React 生态里最顺手的节点图库。本项目用它渲染全站文章图，坐标来自构建时的 <a class=\"wikilink\" data-target=\"d3-force-布局\" href=\"/mansheng/p/d3-force-%E5%B8%83%E5%B1%80\">d3-force-布局</a>，前端只做交互，不跑物理模拟。</p>\n<h2>三个关键决策</h2>\n<ul>\n<li>节点即 React 组件，hover 展开摘要卡，click 跳转文章页</li>\n<li><code>draggable: false</code>，避免用户拖乱构建时算好的布局</li>\n<li>边样式区分 link / tag 弱边，后者虚线低透明度</li>\n</ul>\n<h2>性能</h2>\n<p>节点过千时打开虚拟化，只渲染视口内的节点：</p>\n<pre><code class=\"hljs language-tsx\">&lt;<span class=\"hljs-title class_\">ReactFlow</span> nodes={nodes} edges={edges} onlyRenderVisibleElements minZoom={<span class=\"hljs-number\">0.05</span>} /&gt;\n</code></pre>\n<p>配合 <a class=\"wikilink\" data-target=\"zustand-状态管理\" href=\"/mansheng/p/zustand-%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86\">zustand-状态管理</a> 存过滤状态，切换标签不会触发整图重算。更极端的规模可以参考 <a class=\"wikilink wikilink--ghost\" data-target=\"节点虚拟化技巧\" href=\"/mansheng/p/%E8%8A%82%E7%82%B9%E8%99%9A%E6%8B%9F%E5%8C%96%E6%8A%80%E5%B7%A7\">节点虚拟化技巧</a>，那是下一步要写的。</p>\n",
+  "outgoing": [
+    {
+      "id": "d3-force-布局",
+      "title": "d3-force 力导向布局笔记",
+      "exists": true
+    },
+    {
+      "id": "zustand-状态管理",
+      "title": "为什么图视图的状态用 zustand",
+      "exists": true
+    },
+    {
+      "id": "节点虚拟化技巧",
+      "title": "节点虚拟化技巧",
+      "exists": false
+    }
+  ],
+  "backlinks": [
+    {
+      "id": "d3-force-布局",
+      "title": "d3-force 力导向布局笔记",
+      "context": "力导向布局把节点当质点、边当弹簧，模拟到收敛后得到坐标。本站在构建时跑 300 tick 固化坐标，react flow 实"
+    },
+    {
+      "id": "zustand-状态管理",
+      "title": "为什么图视图的状态用 zustand",
+      "context": "图视图有过滤面板、focus 高亮、搜索定位，状态不少但结构扁平。Redux 太重，Context 会整树重渲染，zusta"
+    },
+    {
+      "id": "阅读批注方法",
+      "title": "我的阅读批注方法：三层笔记",
+      "context": "读完记不住，是因为没有加工。我的批注分三层： 三层结构 1. 划线层 ：原文摘录，零加工，只做标记 2. 转述层 ：用自己的"
+    }
+  ]
+}

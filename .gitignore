@@ -1,0 +1,10 @@
+# 本地备份与临时
+/temp/
+
+# Claude 项目本地配置
+.claude/
+
+# 系统
+.DS_Store
+Thumbs.db
+*.log

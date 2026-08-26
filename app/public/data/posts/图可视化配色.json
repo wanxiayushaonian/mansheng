@@ -1,0 +1,29 @@
+{
+  "id": "图可视化配色",
+  "title": "图可视化的配色纪律",
+  "type": "note",
+  "tags": [
+    "可视化"
+  ],
+  "date": "2026-05-10",
+  "draft": false,
+  "html": "<p>节点图配色最大的陷阱是「彩虹图」：每个标签一个色，结果谁都记不住谁是谁。</p>\n<h2>本站的纪律</h2>\n<ul>\n<li><strong>颜色只编码一个维度</strong>：节点类型（post/note/essay），标签交给过滤面板</li>\n<li><strong>ghost 节点无色</strong>：虚线灰边、透明底，一眼可辨的「未写」状态</li>\n<li><strong>边只分两档</strong>：link 实线蓝，tag 弱边虚线灰、透明度 0.3</li>\n</ul>\n<pre><code class=\"hljs language-css\"><span class=\"hljs-selector-class\">.gnode--ghost</span> { <span class=\"hljs-attribute\">border</span>: <span class=\"hljs-number\">1px</span> dashed <span class=\"hljs-number\">#999</span>; <span class=\"hljs-attribute\">background</span>: transparent; }\n<span class=\"hljs-selector-class\">.edge--tag</span> { <span class=\"hljs-attribute\">stroke-dasharray</span>: <span class=\"hljs-number\">2</span> <span class=\"hljs-number\">4</span>; <span class=\"hljs-attribute\">opacity</span>: <span class=\"hljs-number\">0.3</span>; }\n</code></pre>\n<h2>依据</h2>\n<p>人类工作记忆对颜色的区分上限约 4–6 类。尺寸编码 degree、颜色编码 type、位置编码语义（<a class=\"wikilink\" data-target=\"d3-force-布局\" href=\"/mansheng/p/d3-force-%E5%B8%83%E5%B1%80\">d3-force-布局</a> 的产物），三个通道各司其职。<a class=\"wikilink\" data-target=\"知识图谱入门\" href=\"/mansheng/p/%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1%E5%85%A5%E9%97%A8\">知识图谱入门</a> 的可视化部分也是这套思路。配色系统的源头约束还是 <a class=\"wikilink\" data-target=\"前端性能预算\" href=\"/mansheng/p/%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD%E9%A2%84%E7%AE%97\">前端性能预算</a>：不用图片纹理，纯 CSS。</p>\n",
+  "outgoing": [
+    {
+      "id": "d3-force-布局",
+      "title": "d3-force 力导向布局笔记",
+      "exists": true
+    },
+    {
+      "id": "知识图谱入门",
+      "title": "知识图谱入门：从 triple 到个人知识库",
+      "exists": true
+    },
+    {
+      "id": "前端性能预算",
+      "title": "给博客定一份性能预算",
+      "exists": true
+    }
+  ],
+  "backlinks": []
+}
