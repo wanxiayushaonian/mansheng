@@ -21,6 +21,8 @@ export interface Post {
   tags: string[]
   date: string
   html: string
+  /** 文章目录（构建期从 h2/h3 提取） */
+  toc?: { id: string; text: string; level: number }[]
   outgoing: { id: string; title: string; exists: boolean }[]
   backlinks: { id: string; title: string; context: string }[]
 }
@@ -58,23 +60,24 @@ export interface GraphData {
 
 /* ---------------- 配色 ---------------- */
 
+/* 引用 CSS token（而非硬编码色值）：暗色模式只需切换 :root/[data-theme] 变量即可全站生效 */
 export const C = {
-  paper: '#F7F3EC',
-  paper2: '#F1EBE0',
-  paper3: '#EAE2D3',
-  ink: '#2E2A24',
-  ink2: '#6B6255',
-  ink3: '#A39A8A',
-  line: '#DCD3C2',
-  lineStrong: '#C4B9A4',
-  moss: '#7D8B6A',
-  clay: '#B07D5C',
-  ochre: '#C2A24C',
-  rose: '#B98A7E',
-  slate: '#8B8E7A',
-  plum: '#9A7B8F',
-  accent: '#A45A3C',
-  accentSoft: '#EBD9C8',
+  paper: 'var(--paper)',
+  paper2: 'var(--paper-2)',
+  paper3: 'var(--paper-3)',
+  ink: 'var(--ink)',
+  ink2: 'var(--ink-2)',
+  ink3: 'var(--ink-3)',
+  line: 'var(--line)',
+  lineStrong: 'var(--line-strong)',
+  moss: 'var(--moss)',
+  clay: 'var(--clay)',
+  ochre: 'var(--ochre)',
+  rose: 'var(--rose)',
+  slate: 'var(--slate)',
+  plum: 'var(--plum)',
+  accent: 'var(--accent-color)',
+  accentSoft: 'var(--accent-soft)',
 }
 
 /** 按标签名稳定取色（hash，不随标签频率变化洗牌） */
@@ -202,7 +205,7 @@ export function TagChip({
     color: active ? C.ink : C.ink2,
   }
   const cls =
-    'inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 transition-colors duration-150 hover:bg-[#EBD9C8] hover:text-[#2E2A24]'
+    'inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 transition-colors duration-150 hover:bg-accentc-soft'
   if (onClick) {
     return (
       <button type="button" className={cls} style={style} onClick={onClick}>

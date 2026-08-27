@@ -7,7 +7,19 @@
   ],
   "date": "2025-11-11",
   "draft": false,
-  "html": "<p>vault 到 500 篇后全量构建开始变慢。增量构建的核心是：以文件 mtime + 内容 hash 做缓存键，只重新解析变化的 Markdown。</p>\n<h2>注意点</h2>\n<ul>\n<li>文章变了，它的 <strong>backlinks 对象</strong> 也得重算——反链是全局依赖</li>\n<li>布局坐标用旧 graph.json 做初始值，见 <a class=\"wikilink\" data-target=\"vite-构建优化\" href=\"/mansheng/p/vite-%E6%9E%84%E5%BB%BA%E4%BC%98%E5%8C%96\">vite-构建优化</a></li>\n<li>缓存文件放 <code>.cache/build-data.json</code>，记得加 .gitignore</li>\n</ul>\n<pre><code class=\"hljs language-js\"><span class=\"hljs-keyword\">const</span> key = <span class=\"hljs-string\">`<span class=\"hljs-subst\">${f}</span>:<span class=\"hljs-subst\">${stat.mtimeMs}</span>:<span class=\"hljs-subst\">${hash(raw)}</span>`</span>;\n<span class=\"hljs-keyword\">if</span> (cache[f] === key) <span class=\"hljs-keyword\">return</span> cacheResult[f];\n</code></pre>\n<h2>效果</h2>\n<p>全量 800ms → 增量 60ms（单篇改动）。图数据的边表重建很便宜，因为 <a class=\"wikilink\" data-target=\"markdown-解析管线\" href=\"/mansheng/p/markdown-%E8%A7%A3%E6%9E%90%E7%AE%A1%E7%BA%BF\">markdown-解析管线</a> 已经把解析和关系抽取分离了。下一步想做 watch 模式热更新，那是 <a class=\"wikilink wikilink--ghost\" data-target=\"构建缓存策略\" href=\"/mansheng/p/%E6%9E%84%E5%BB%BA%E7%BC%93%E5%AD%98%E7%AD%96%E7%95%A5\">构建缓存策略</a> 要展开的话题。</p>\n",
+  "html": "<p>vault 到 500 篇后全量构建开始变慢。增量构建的核心是：以文件 mtime + 内容 hash 做缓存键，只重新解析变化的 Markdown。</p>\n<h2 id=\"h-0\">注意点</h2>\n<ul>\n<li>文章变了，它的 <strong>backlinks 对象</strong> 也得重算——反链是全局依赖</li>\n<li>布局坐标用旧 graph.json 做初始值，见 <a class=\"wikilink\" data-target=\"vite-构建优化\" href=\"/mansheng/p/vite-%E6%9E%84%E5%BB%BA%E4%BC%98%E5%8C%96\">vite-构建优化</a></li>\n<li>缓存文件放 <code>.cache/build-data.json</code>，记得加 .gitignore</li>\n</ul>\n<pre><code class=\"hljs language-js\"><span class=\"hljs-keyword\">const</span> key = <span class=\"hljs-string\">`<span class=\"hljs-subst\">${f}</span>:<span class=\"hljs-subst\">${stat.mtimeMs}</span>:<span class=\"hljs-subst\">${hash(raw)}</span>`</span>;\n<span class=\"hljs-keyword\">if</span> (cache[f] === key) <span class=\"hljs-keyword\">return</span> cacheResult[f];\n</code></pre>\n<h2 id=\"h-1\">效果</h2>\n<p>全量 800ms → 增量 60ms（单篇改动）。图数据的边表重建很便宜，因为 <a class=\"wikilink\" data-target=\"markdown-解析管线\" href=\"/mansheng/p/markdown-%E8%A7%A3%E6%9E%90%E7%AE%A1%E7%BA%BF\">markdown-解析管线</a> 已经把解析和关系抽取分离了。下一步想做 watch 模式热更新，那是 <a class=\"wikilink wikilink--ghost\" data-target=\"构建缓存策略\" href=\"/mansheng/p/%E6%9E%84%E5%BB%BA%E7%BC%93%E5%AD%98%E7%AD%96%E7%95%A5\">构建缓存策略</a> 要展开的话题。</p>\n",
+  "toc": [
+    {
+      "id": "h-0",
+      "text": "注意点",
+      "level": 2
+    },
+    {
+      "id": "h-1",
+      "text": "效果",
+      "level": 2
+    }
+  ],
   "outgoing": [
     {
       "id": "vite-构建优化",

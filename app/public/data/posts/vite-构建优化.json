@@ -8,7 +8,19 @@
   ],
   "date": "2025-07-15",
   "draft": false,
-  "html": "<p>本站构建分两步：<code>node build.mjs</code> 生成数据层，再 <code>vite build</code>。数据层是纯 Node 脚本，不进 Vite 管线，所以 Markdown 解析零成本。</p>\n<h2>有效手段</h2>\n<ul>\n<li><strong>manualChunks</strong>：把 react-flow、recharts 拆成独立 chunk，首屏只加载壳</li>\n<li><strong>按需 fetch</strong>：文章正文放 <code>public/data/posts/&lt;id&gt;.json</code>，不进 bundle</li>\n<li><strong>esbuild minify</strong>：比 terser 快 20 倍，体积差距 &lt;2%</li>\n</ul>\n<pre><code class=\"hljs language-ts\"><span class=\"hljs-attr\">build</span>: {\n  <span class=\"hljs-attr\">rollupOptions</span>: {\n    <span class=\"hljs-attr\">output</span>: { <span class=\"hljs-attr\">manualChunks</span>: { <span class=\"hljs-attr\">graph</span>: [<span class=\"hljs-string\">&#x27;@xyflow/react&#x27;</span>] } }\n  }\n}\n</code></pre>\n<h2>无效的折腾</h2>\n<p>压缩 Markdown 源文件、给 JSON 加 gzip 预压——部署平台（Pages）会自动做。真正值得投入的是增量构建：<a class=\"wikilink\" data-target=\"markdown-解析管线\" href=\"/mansheng/p/markdown-%E8%A7%A3%E6%9E%90%E7%AE%A1%E7%BA%BF\">markdown-解析管线</a> 只重算变化的文章，缓存思路见 <a class=\"wikilink wikilink--ghost\" data-target=\"构建缓存策略\" href=\"/mansheng/p/%E6%9E%84%E5%BB%BA%E7%BC%93%E5%AD%98%E7%AD%96%E7%95%A5\">构建缓存策略</a>。</p>\n",
+  "html": "<p>本站构建分两步：<code>node build.mjs</code> 生成数据层，再 <code>vite build</code>。数据层是纯 Node 脚本，不进 Vite 管线，所以 Markdown 解析零成本。</p>\n<h2 id=\"h-0\">有效手段</h2>\n<ul>\n<li><strong>manualChunks</strong>：把 react-flow、recharts 拆成独立 chunk，首屏只加载壳</li>\n<li><strong>按需 fetch</strong>：文章正文放 <code>public/data/posts/&lt;id&gt;.json</code>，不进 bundle</li>\n<li><strong>esbuild minify</strong>：比 terser 快 20 倍，体积差距 &lt;2%</li>\n</ul>\n<pre><code class=\"hljs language-ts\"><span class=\"hljs-attr\">build</span>: {\n  <span class=\"hljs-attr\">rollupOptions</span>: {\n    <span class=\"hljs-attr\">output</span>: { <span class=\"hljs-attr\">manualChunks</span>: { <span class=\"hljs-attr\">graph</span>: [<span class=\"hljs-string\">&#x27;@xyflow/react&#x27;</span>] } }\n  }\n}\n</code></pre>\n<h2 id=\"h-1\">无效的折腾</h2>\n<p>压缩 Markdown 源文件、给 JSON 加 gzip 预压——部署平台（Pages）会自动做。真正值得投入的是增量构建：<a class=\"wikilink\" data-target=\"markdown-解析管线\" href=\"/mansheng/p/markdown-%E8%A7%A3%E6%9E%90%E7%AE%A1%E7%BA%BF\">markdown-解析管线</a> 只重算变化的文章，缓存思路见 <a class=\"wikilink wikilink--ghost\" data-target=\"构建缓存策略\" href=\"/mansheng/p/%E6%9E%84%E5%BB%BA%E7%BC%93%E5%AD%98%E7%AD%96%E7%95%A5\">构建缓存策略</a>。</p>\n",
+  "toc": [
+    {
+      "id": "h-0",
+      "text": "有效手段",
+      "level": 2
+    },
+    {
+      "id": "h-1",
+      "text": "无效的折腾",
+      "level": 2
+    }
+  ],
   "outgoing": [
     {
       "id": "markdown-解析管线",

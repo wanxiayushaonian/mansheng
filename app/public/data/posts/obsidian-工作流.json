@@ -8,7 +8,19 @@
   ],
   "date": "2025-05-08",
   "draft": false,
-  "html": "<p>vault 直接用 Obsidian 打开，写完 <code>git push</code> 即发布。整个工作流只有三个约定：文件名用英文 slug 作 id、frontmatter 齐全、链接一律用双方括号语法。</p>\n<h2>日常节奏</h2>\n<ul>\n<li>早上打开 Daily Note，把零散想法记成一句话 stub</li>\n<li>stub 成熟后拆成独立笔记，链接回相关文章</li>\n<li>每周五扫一遍「未解析链接」——那些指向空白处的 <a class=\"wikilink wikilink--ghost\" data-target=\"增量式写作\" href=\"/mansheng/p/%E5%A2%9E%E9%87%8F%E5%BC%8F%E5%86%99%E4%BD%9C\">增量式写作</a> 式占位，就是下周的写作选题</li>\n</ul>\n<h2>与博客的关系</h2>\n<p>Obsidian 的图谱视图是写作时的导航，而本站发布后的图是读者的导航，两者同源但服务不同人群。<a class=\"wikilink\" data-target=\"数字花园方法论\" href=\"/mansheng/p/%E6%95%B0%E5%AD%97%E8%8A%B1%E5%9B%AD%E6%96%B9%E6%B3%95%E8%AE%BA\">数字花园方法论</a> 讲的正是这种「内容先行、结构自生」的思路。<a class=\"wikilink\" data-target=\"backlinks-的价值\" href=\"/mansheng/p/backlinks-%E7%9A%84%E4%BB%B7%E5%80%BC\">backlinks-的价值</a> 则解释了为什么我写作时几乎只看反链面板。</p>\n<p>工具本身不重要，重要的是 <a class=\"wikilink\" data-target=\"写作即思考\" href=\"/mansheng/p/%E5%86%99%E4%BD%9C%E5%8D%B3%E6%80%9D%E8%80%83\">写作即思考</a>：写不下来，说明还没想清楚。</p>\n",
+  "html": "<p>vault 直接用 Obsidian 打开，写完 <code>git push</code> 即发布。整个工作流只有三个约定：文件名用英文 slug 作 id、frontmatter 齐全、链接一律用双方括号语法。</p>\n<h2 id=\"h-0\">日常节奏</h2>\n<ul>\n<li>早上打开 Daily Note，把零散想法记成一句话 stub</li>\n<li>stub 成熟后拆成独立笔记，链接回相关文章</li>\n<li>每周五扫一遍「未解析链接」——那些指向空白处的 <a class=\"wikilink wikilink--ghost\" data-target=\"增量式写作\" href=\"/mansheng/p/%E5%A2%9E%E9%87%8F%E5%BC%8F%E5%86%99%E4%BD%9C\">增量式写作</a> 式占位，就是下周的写作选题</li>\n</ul>\n<h2 id=\"h-1\">与博客的关系</h2>\n<p>Obsidian 的图谱视图是写作时的导航，而本站发布后的图是读者的导航，两者同源但服务不同人群。<a class=\"wikilink\" data-target=\"数字花园方法论\" href=\"/mansheng/p/%E6%95%B0%E5%AD%97%E8%8A%B1%E5%9B%AD%E6%96%B9%E6%B3%95%E8%AE%BA\">数字花园方法论</a> 讲的正是这种「内容先行、结构自生」的思路。<a class=\"wikilink\" data-target=\"backlinks-的价值\" href=\"/mansheng/p/backlinks-%E7%9A%84%E4%BB%B7%E5%80%BC\">backlinks-的价值</a> 则解释了为什么我写作时几乎只看反链面板。</p>\n<p>工具本身不重要，重要的是 <a class=\"wikilink\" data-target=\"写作即思考\" href=\"/mansheng/p/%E5%86%99%E4%BD%9C%E5%8D%B3%E6%80%9D%E8%80%83\">写作即思考</a>：写不下来，说明还没想清楚。</p>\n",
+  "toc": [
+    {
+      "id": "h-0",
+      "text": "日常节奏",
+      "level": 2
+    },
+    {
+      "id": "h-1",
+      "text": "与博客的关系",
+      "level": 2
+    }
+  ],
   "outgoing": [
     {
       "id": "增量式写作",

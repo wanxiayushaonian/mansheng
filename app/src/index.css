@@ -21,6 +21,8 @@
     --plum: #9A7B8F;
     --accent-color: #A45A3C;
     --accent-soft: #EBD9C8;
+    /* 图谱节点圆点的混白目标（暗色主题覆盖为暗纸色） */
+    --dot-mix: #ffffff;
 
     /* shadcn bridge (HSL triplets) */
     --background: 40 33% 95%;
@@ -51,6 +53,49 @@
     --sidebar-accent-foreground: 36 13% 16%;
     --sidebar-border: 37 25% 81%;
     --sidebar-ring: 19 46% 44%;
+  }
+
+  /* 夜间墨色：同一套暖调语义，压暗后的纸上墨迹 */
+  [data-theme='dark'] {
+    --paper: #201c16;
+    --paper-2: #292320;
+    --paper-3: #332c25;
+    --ink: #eae3d4;
+    --ink-2: #b5ab94;
+    --ink-3: #827969;
+    --line: #3b342b;
+    --line-strong: #4c4437;
+    --moss: #97a882;
+    --clay: #ce9570;
+    --ochre: #d8b563;
+    --rose: #ce9e90;
+    --slate: #a2a48f;
+    --plum: #b996ac;
+    --accent-color: #d08462;
+    --accent-soft: #43302a;
+    /* 图谱节点在暗色下的混白目标换成暗纸色 */
+    --dot-mix: #3e372e;
+
+    /* shadcn bridge（HSL 三元组）*/
+    --background: 26 13% 11%;
+    --foreground: 40 36% 87%;
+    --card: 26 13% 11%;
+    --card-foreground: 40 36% 87%;
+    --popover: 26 12% 14%;
+    --popover-foreground: 40 36% 87%;
+    --primary: 19 52% 58%;
+    --primary-foreground: 26 13% 11%;
+    --secondary: 26 12% 16%;
+    --secondary-foreground: 40 36% 87%;
+    --muted: 26 12% 16%;
+    --muted-foreground: 38 18% 66%;
+    --accent: 22 22% 19%;
+    --accent-foreground: 40 36% 87%;
+    --destructive: 8 45% 45%;
+    --destructive-foreground: 40 33% 95%;
+    --border: 26 15% 21%;
+    --input: 26 15% 21%;
+    --ring: 19 52% 58%;
   }
 
   * {

@@ -1,13 +1,32 @@
 import type { ReactNode } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import { motion } from 'framer-motion'
+import { Moon, Sun } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { useGraphStore } from '@/store'
 
 const NAV = [
   { to: '/graph', label: '图谱' },
   { to: '/tag/全部', label: '标签' },
   { to: '/about', label: '关于' },
 ]
+
+/** 明暗切换 */
+function ThemeToggle() {
+  const theme = useGraphStore((s) => s.theme)
+  const toggleTheme = useGraphStore((s) => s.toggleTheme)
+  return (
+    <button
+      type="button"
+      onClick={toggleTheme}
+      className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-ink-2 transition-colors hover:text-accentc"
+      aria-label={theme === 'dark' ? '切换到亮色' : '切换到暗色'}
+      title={theme === 'dark' ? '切换到亮色' : '切换到暗色'}
+    >
+      {theme === 'dark' ? <Sun size={15} /> : <Moon size={15} />}
+    </button>
+  )
+}
 
 function NavItems({ className }: { className?: string }) {
   return (
@@ -67,6 +86,7 @@ export default function TopBar({ variant = 'bar', children }: TopBarProps) {
         <SiteMark />
         <span className="w-px h-5 bg-line hidden sm:block" aria-hidden />
         <NavItems className="hidden sm:flex" />
+        <ThemeToggle />
         {children}
       </motion.header>
     )
@@ -82,6 +102,7 @@ export default function TopBar({ variant = 'bar', children }: TopBarProps) {
         <SiteMark />
         <div className="flex items-center gap-4">
           <NavItems />
+          <ThemeToggle />
           {children}
         </div>
       </div>

@@ -33,6 +33,16 @@ npm run preview    # 本地预览构建产物
 写完 push 到 master 即自动构建上线。`[[不存在的链接]]` 会作为"种子节点"
 出现在图谱上，等它被写出来。
 
+支持语法：`$公式$` / `$$块级公式$$`（KaTeX）、`​```mermaid` 流程图、
+`![[图片.png]]` 嵌入、`![[笔记]]` 段落引用、`[[笔记#标题]]` 链接。
+
+## 可选功能
+
+- **giscus 评论**：仓库开启 Discussions 并安装 giscus app 后，在 CI 环境变量
+  （或 `.env`）里配置 `VITE_GISCUS_REPO` / `VITE_GISCUS_REPO_ID` /
+  `VITE_GISCUS_CATEGORY_ID`（category 默认 Announcements），文章页即出现评论区。
+- **PWA**：已内置——站点可安装到桌面，离线时仍可阅读访问过的文章。
+
 ## 部署配置
 
 子路径由 `BASE_PATH`（默认 `/mansheng/`）贯穿 vite / build.mjs / prerender 三处；

@@ -14,6 +14,17 @@ import '@fontsource/jetbrains-mono/500.css'
 import 'katex/dist/katex.min.css'
 import './index.css'
 import App from './App.tsx'
+import { applyTheme, useGraphStore } from './store'
+
+// 首帧前落地主题，避免闪烁
+applyTheme(useGraphStore.getState().theme)
+
+// PWA：仅生产构建注册（离线可漫游已读内容）
+if ('serviceWorker' in navigator && import.meta.env.PROD) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register(`${import.meta.env.BASE_URL}sw.js`).catch(() => {})
+  })
+}
 
 createRoot(document.getElementById('root')!).render(
   <BrowserRouter basename={import.meta.env.BASE_URL.replace(/\/+$/, '') || undefined}>

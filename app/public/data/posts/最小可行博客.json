@@ -8,7 +8,24 @@
   ],
   "date": "2026-05-28",
   "draft": false,
-  "html": "<p>如果你想复刻本站，最小可行版本只需要五样东西：</p>\n<h2>清单</h2>\n<ol>\n<li>一个 vault 目录，20 篇互相链接的 Markdown</li>\n<li>一个 200 行的 build.mjs（<a class=\"wikilink\" data-target=\"markdown-解析管线\" href=\"/mansheng/p/markdown-%E8%A7%A3%E6%9E%90%E7%AE%A1%E7%BA%BF\">markdown-解析管线</a> 有完整拆解）</li>\n<li>React Flow 渲染 graph.json，坐标来自构建时的 d3-force</li>\n<li>文章页 + backlinks 面板</li>\n<li>一个静态托管</li>\n</ol>\n<h2>可以砍掉的</h2>\n<p>搜索、时间轴、MiniMap、过滤面板——全是增强，不是核心。核心体验只有两个：在图上发现文章、在文章里发现反链。<a class=\"wikilink\" data-target=\"数字花园方法论\" href=\"/mansheng/p/%E6%95%B0%E5%AD%97%E8%8A%B1%E5%9B%AD%E6%96%B9%E6%B3%95%E8%AE%BA\">数字花园方法论</a> 解释了为什么链接网络本身就值得一个图视图。</p>\n<h2>成本</h2>\n<p>一个周末。其中半天写构建脚本，半天调 <a class=\"wikilink\" data-target=\"vite-构建优化\" href=\"/mansheng/p/vite-%E6%9E%84%E5%BB%BA%E4%BC%98%E5%8C%96\">vite-构建优化</a> 的拆包，一天写前 20 篇文章。内容永远是最贵的部分，所以先把写作流跑通（<a class=\"wikilink\" data-target=\"obsidian-工作流\" href=\"/mansheng/p/obsidian-%E5%B7%A5%E4%BD%9C%E6%B5%81\">obsidian-工作流</a>），再谈技术。</p>\n",
+  "html": "<p>如果你想复刻本站，最小可行版本只需要五样东西：</p>\n<h2 id=\"h-0\">清单</h2>\n<ol>\n<li>一个 vault 目录，20 篇互相链接的 Markdown</li>\n<li>一个 200 行的 build.mjs（<a class=\"wikilink\" data-target=\"markdown-解析管线\" href=\"/mansheng/p/markdown-%E8%A7%A3%E6%9E%90%E7%AE%A1%E7%BA%BF\">markdown-解析管线</a> 有完整拆解）</li>\n<li>React Flow 渲染 graph.json，坐标来自构建时的 d3-force</li>\n<li>文章页 + backlinks 面板</li>\n<li>一个静态托管</li>\n</ol>\n<h2 id=\"h-1\">可以砍掉的</h2>\n<p>搜索、时间轴、MiniMap、过滤面板——全是增强，不是核心。核心体验只有两个：在图上发现文章、在文章里发现反链。<a class=\"wikilink\" data-target=\"数字花园方法论\" href=\"/mansheng/p/%E6%95%B0%E5%AD%97%E8%8A%B1%E5%9B%AD%E6%96%B9%E6%B3%95%E8%AE%BA\">数字花园方法论</a> 解释了为什么链接网络本身就值得一个图视图。</p>\n<h2 id=\"h-2\">成本</h2>\n<p>一个周末。其中半天写构建脚本，半天调 <a class=\"wikilink\" data-target=\"vite-构建优化\" href=\"/mansheng/p/vite-%E6%9E%84%E5%BB%BA%E4%BC%98%E5%8C%96\">vite-构建优化</a> 的拆包，一天写前 20 篇文章。内容永远是最贵的部分，所以先把写作流跑通（<a class=\"wikilink\" data-target=\"obsidian-工作流\" href=\"/mansheng/p/obsidian-%E5%B7%A5%E4%BD%9C%E6%B5%81\">obsidian-工作流</a>），再谈技术。</p>\n",
+  "toc": [
+    {
+      "id": "h-0",
+      "text": "清单",
+      "level": 2
+    },
+    {
+      "id": "h-1",
+      "text": "可以砍掉的",
+      "level": 2
+    },
+    {
+      "id": "h-2",
+      "text": "成本",
+      "level": 2
+    }
+  ],
   "outgoing": [
     {
       "id": "markdown-解析管线",

@@ -8,7 +8,19 @@
   ],
   "date": "2026-04-05",
   "draft": false,
-  "html": "<p>读完记不住，是因为没有加工。我的批注分三层：</p>\n<h2>三层结构</h2>\n<ol>\n<li><strong>划线层</strong>：原文摘录，零加工，只做标记</li>\n<li><strong>转述层</strong>：用自己的话重写核心观点——这一步过滤掉 70% 的「以为懂了」</li>\n<li><strong>连接层</strong>：这条笔记和我已有的哪篇笔记对话？写下链接和理由</li>\n</ol>\n<p>第三层最贵也最有价值。<a class=\"wikilink\" data-target=\"backlinks-的价值\" href=\"/mansheng/p/backlinks-%E7%9A%84%E4%BB%B7%E5%80%BC\">backlinks-的价值</a> 说的反链网络，源头都是阅读时的这个追问。</p>\n<h2>一个反常识</h2>\n<p>批注不应该追求完整。一本书留下三条高质量连接层笔记，胜过三十条划线。<a class=\"wikilink\" data-target=\"写作即思考\" href=\"/mansheng/p/%E5%86%99%E4%BD%9C%E5%8D%B3%E6%80%9D%E8%80%83\">写作即思考</a> 在这里完全适用：写不出来的转述，就是没读懂的部分。</p>\n<p>读技术文章时我额外加一层「验证」：跑一遍作者的代码。比如读 <a class=\"wikilink\" data-target=\"react-flow-实践\" href=\"/mansheng/p/react-flow-%E5%AE%9E%E8%B7%B5\">react-flow-实践</a> 那类文章，不跑等于没读。</p>\n",
+  "html": "<p>读完记不住，是因为没有加工。我的批注分三层：</p>\n<h2 id=\"h-0\">三层结构</h2>\n<ol>\n<li><strong>划线层</strong>：原文摘录，零加工，只做标记</li>\n<li><strong>转述层</strong>：用自己的话重写核心观点——这一步过滤掉 70% 的「以为懂了」</li>\n<li><strong>连接层</strong>：这条笔记和我已有的哪篇笔记对话？写下链接和理由</li>\n</ol>\n<p>第三层最贵也最有价值。<a class=\"wikilink\" data-target=\"backlinks-的价值\" href=\"/mansheng/p/backlinks-%E7%9A%84%E4%BB%B7%E5%80%BC\">backlinks-的价值</a> 说的反链网络，源头都是阅读时的这个追问。</p>\n<h2 id=\"h-1\">一个反常识</h2>\n<p>批注不应该追求完整。一本书留下三条高质量连接层笔记，胜过三十条划线。<a class=\"wikilink\" data-target=\"写作即思考\" href=\"/mansheng/p/%E5%86%99%E4%BD%9C%E5%8D%B3%E6%80%9D%E8%80%83\">写作即思考</a> 在这里完全适用：写不出来的转述，就是没读懂的部分。</p>\n<p>读技术文章时我额外加一层「验证」：跑一遍作者的代码。比如读 <a class=\"wikilink\" data-target=\"react-flow-实践\" href=\"/mansheng/p/react-flow-%E5%AE%9E%E8%B7%B5\">react-flow-实践</a> 那类文章，不跑等于没读。</p>\n",
+  "toc": [
+    {
+      "id": "h-0",
+      "text": "三层结构",
+      "level": 2
+    },
+    {
+      "id": "h-1",
+      "text": "一个反常识",
+      "level": 2
+    }
+  ],
   "outgoing": [
     {
       "id": "backlinks-的价值",

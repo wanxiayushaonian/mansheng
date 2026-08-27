@@ -8,7 +8,19 @@
   ],
   "date": "2025-03-05",
   "draft": false,
-  "html": "<p>力导向布局把节点当质点、边当弹簧，模拟到收敛后得到坐标。本站在构建时跑 300 tick 固化坐标，<a class=\"wikilink\" data-target=\"react-flow-实践\" href=\"/mansheng/p/react-flow-%E5%AE%9E%E8%B7%B5\">react-flow-实践</a> 里解释了前端为什么不再模拟。</p>\n<h2>调参经验</h2>\n<ul>\n<li><code>forceLink.distance</code>：link 边 90，tag 弱边 180，让弱关系把图撑开</li>\n<li><code>forceManyBody().strength(-400)</code>：斥力，值越大图越稀疏</li>\n<li><code>forceCollide(40)</code>：防止节点重叠，半径要大于节点视觉半径</li>\n</ul>\n<pre><code class=\"hljs language-js\"><span class=\"hljs-keyword\">const</span> sim = <span class=\"hljs-title function_\">forceSimulation</span>(nodes)\n  .<span class=\"hljs-title function_\">force</span>(<span class=\"hljs-string\">&#x27;link&#x27;</span>, <span class=\"hljs-title function_\">forceLink</span>(edges).<span class=\"hljs-title function_\">id</span>(<span class=\"hljs-function\"><span class=\"hljs-params\">d</span> =&gt;</span> d.<span class=\"hljs-property\">id</span>).<span class=\"hljs-title function_\">distance</span>(<span class=\"hljs-number\">90</span>))\n  .<span class=\"hljs-title function_\">force</span>(<span class=\"hljs-string\">&#x27;charge&#x27;</span>, <span class=\"hljs-title function_\">forceManyBody</span>().<span class=\"hljs-title function_\">strength</span>(-<span class=\"hljs-number\">400</span>))\n  .<span class=\"hljs-title function_\">stop</span>();\n<span class=\"hljs-keyword\">for</span> (<span class=\"hljs-keyword\">let</span> i = <span class=\"hljs-number\">0</span>; i &lt; <span class=\"hljs-number\">300</span>; i++) sim.<span class=\"hljs-title function_\">tick</span>();\n</code></pre>\n<h2>稳定性</h2>\n<p>每次构建位置乱跳会破坏读者的心智地图。解法：读旧 graph.json 坐标做初始值，新节点在质心附近随机落位。这和 <a class=\"wikilink\" data-target=\"图数据库选型\" href=\"/mansheng/p/%E5%9B%BE%E6%95%B0%E6%8D%AE%E5%BA%93%E9%80%89%E5%9E%8B\">图数据库选型</a> 无关，但对图的可读性比选型重要得多。</p>\n",
+  "html": "<p>力导向布局把节点当质点、边当弹簧，模拟到收敛后得到坐标。本站在构建时跑 300 tick 固化坐标，<a class=\"wikilink\" data-target=\"react-flow-实践\" href=\"/mansheng/p/react-flow-%E5%AE%9E%E8%B7%B5\">react-flow-实践</a> 里解释了前端为什么不再模拟。</p>\n<h2 id=\"h-0\">调参经验</h2>\n<ul>\n<li><code>forceLink.distance</code>：link 边 90，tag 弱边 180，让弱关系把图撑开</li>\n<li><code>forceManyBody().strength(-400)</code>：斥力，值越大图越稀疏</li>\n<li><code>forceCollide(40)</code>：防止节点重叠，半径要大于节点视觉半径</li>\n</ul>\n<pre><code class=\"hljs language-js\"><span class=\"hljs-keyword\">const</span> sim = <span class=\"hljs-title function_\">forceSimulation</span>(nodes)\n  .<span class=\"hljs-title function_\">force</span>(<span class=\"hljs-string\">&#x27;link&#x27;</span>, <span class=\"hljs-title function_\">forceLink</span>(edges).<span class=\"hljs-title function_\">id</span>(<span class=\"hljs-function\"><span class=\"hljs-params\">d</span> =&gt;</span> d.<span class=\"hljs-property\">id</span>).<span class=\"hljs-title function_\">distance</span>(<span class=\"hljs-number\">90</span>))\n  .<span class=\"hljs-title function_\">force</span>(<span class=\"hljs-string\">&#x27;charge&#x27;</span>, <span class=\"hljs-title function_\">forceManyBody</span>().<span class=\"hljs-title function_\">strength</span>(-<span class=\"hljs-number\">400</span>))\n  .<span class=\"hljs-title function_\">stop</span>();\n<span class=\"hljs-keyword\">for</span> (<span class=\"hljs-keyword\">let</span> i = <span class=\"hljs-number\">0</span>; i &lt; <span class=\"hljs-number\">300</span>; i++) sim.<span class=\"hljs-title function_\">tick</span>();\n</code></pre>\n<h2 id=\"h-1\">稳定性</h2>\n<p>每次构建位置乱跳会破坏读者的心智地图。解法：读旧 graph.json 坐标做初始值，新节点在质心附近随机落位。这和 <a class=\"wikilink\" data-target=\"图数据库选型\" href=\"/mansheng/p/%E5%9B%BE%E6%95%B0%E6%8D%AE%E5%BA%93%E9%80%89%E5%9E%8B\">图数据库选型</a> 无关，但对图的可读性比选型重要得多。</p>\n",
+  "toc": [
+    {
+      "id": "h-0",
+      "text": "调参经验",
+      "level": 2
+    },
+    {
+      "id": "h-1",
+      "text": "稳定性",
+      "level": 2
+    }
+  ],
   "outgoing": [
     {
       "id": "react-flow-实践",

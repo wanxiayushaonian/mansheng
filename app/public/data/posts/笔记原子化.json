@@ -8,7 +8,19 @@
   ],
   "date": "2026-06-15",
   "draft": false,
-  "html": "<p>原子化的标准是：一条笔记只讲一件事，且标题能作为别的文章里的链接锚点自然出现。</p>\n<h2>检验方法</h2>\n<ul>\n<li>这条笔记能否被三篇不同主题的文章引用？不能，说明它太专属于某个上下文</li>\n<li>标题念出来像不像一个「概念」？「2024 年终总结」不是概念，<a class=\"wikilink\" data-target=\"backlinks-的价值\" href=\"/mansheng/p/backlinks-%E7%9A%84%E4%BB%B7%E5%80%BC\">backlinks-的价值</a> 是</li>\n<li>拆开后两半是否各自成立？成立，就拆</li>\n</ul>\n<h2>代价</h2>\n<p>原子化会制造大量短笔记，没有链接网络它们就是碎片。这正是 <a class=\"wikilink\" data-target=\"数字花园方法论\" href=\"/mansheng/p/%E6%95%B0%E5%AD%97%E8%8A%B1%E5%9B%AD%E6%96%B9%E6%B3%95%E8%AE%BA\">数字花园方法论</a> 强调链接优先的原因——原子化 × 链接密度 = 网络价值。</p>\n<p><a class=\"wikilink\" data-target=\"写作即思考\" href=\"/mansheng/p/%E5%86%99%E4%BD%9C%E5%8D%B3%E6%80%9D%E8%80%83\">写作即思考</a> 的视角下，原子化还有一层好处：写 300 字的单点笔记没有心理门槛，想法的捕获率会显著提高。写不出来长文的日子，就写一条 <a class=\"wikilink wikilink--ghost\" data-target=\"常青笔记\" href=\"/mansheng/p/%E5%B8%B8%E9%9D%92%E7%AC%94%E8%AE%B0\">常青笔记</a> 式的原子笔记。</p>\n",
+  "html": "<p>原子化的标准是：一条笔记只讲一件事，且标题能作为别的文章里的链接锚点自然出现。</p>\n<h2 id=\"h-0\">检验方法</h2>\n<ul>\n<li>这条笔记能否被三篇不同主题的文章引用？不能，说明它太专属于某个上下文</li>\n<li>标题念出来像不像一个「概念」？「2024 年终总结」不是概念，<a class=\"wikilink\" data-target=\"backlinks-的价值\" href=\"/mansheng/p/backlinks-%E7%9A%84%E4%BB%B7%E5%80%BC\">backlinks-的价值</a> 是</li>\n<li>拆开后两半是否各自成立？成立，就拆</li>\n</ul>\n<h2 id=\"h-1\">代价</h2>\n<p>原子化会制造大量短笔记，没有链接网络它们就是碎片。这正是 <a class=\"wikilink\" data-target=\"数字花园方法论\" href=\"/mansheng/p/%E6%95%B0%E5%AD%97%E8%8A%B1%E5%9B%AD%E6%96%B9%E6%B3%95%E8%AE%BA\">数字花园方法论</a> 强调链接优先的原因——原子化 × 链接密度 = 网络价值。</p>\n<p><a class=\"wikilink\" data-target=\"写作即思考\" href=\"/mansheng/p/%E5%86%99%E4%BD%9C%E5%8D%B3%E6%80%9D%E8%80%83\">写作即思考</a> 的视角下，原子化还有一层好处：写 300 字的单点笔记没有心理门槛，想法的捕获率会显著提高。写不出来长文的日子，就写一条 <a class=\"wikilink wikilink--ghost\" data-target=\"常青笔记\" href=\"/mansheng/p/%E5%B8%B8%E9%9D%92%E7%AC%94%E8%AE%B0\">常青笔记</a> 式的原子笔记。</p>\n",
+  "toc": [
+    {
+      "id": "h-0",
+      "text": "检验方法",
+      "level": 2
+    },
+    {
+      "id": "h-1",
+      "text": "代价",
+      "level": 2
+    }
+  ],
   "outgoing": [
     {
       "id": "backlinks-的价值",

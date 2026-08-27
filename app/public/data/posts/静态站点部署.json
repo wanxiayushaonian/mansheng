@@ -8,7 +8,19 @@
   ],
   "date": "2026-03-18",
   "draft": false,
-  "html": "<p>本站是纯静态产物：vite build + build.mjs 生成的 data/，随便哪个静态托管都能跑。</p>\n<h2>对比</h2>\n<ul>\n<li><strong>GitHub Pages</strong>：免费、Actions 一体化，缺点是缓存策略不可控</li>\n<li><strong>Cloudflare Pages</strong>：全球边缘节点快，带宽几乎不限，构建限额大方</li>\n</ul>\n<p>部署流水线就三步：</p>\n<pre><code class=\"hljs language-bash\">node build.mjs\nnpm run build\nwrangler pages deploy dist\n</code></pre>\n<h2>经验</h2>\n<ul>\n<li>SPA 路由需要 <code>_redirects</code> 文件：<code>/* /index.html 200</code></li>\n<li>数据 JSON 设长缓存（带 hash 更好），HTML 不缓存</li>\n<li>预览环境（PR 自动部署）对花园类站点意义不大，内容站点没有「功能回归」</li>\n</ul>\n<p>更激进的方案是把部分页面挪到边缘渲染，见 <a class=\"wikilink wikilink--ghost\" data-target=\"边缘渲染实验\" href=\"/mansheng/p/%E8%BE%B9%E7%BC%98%E6%B8%B2%E6%9F%93%E5%AE%9E%E9%AA%8C\">边缘渲染实验</a>。构建侧的优化见 <a class=\"wikilink\" data-target=\"vite-构建优化\" href=\"/mansheng/p/vite-%E6%9E%84%E5%BB%BA%E4%BC%98%E5%8C%96\">vite-构建优化</a>。</p>\n",
+  "html": "<p>本站是纯静态产物：vite build + build.mjs 生成的 data/，随便哪个静态托管都能跑。</p>\n<h2 id=\"h-0\">对比</h2>\n<ul>\n<li><strong>GitHub Pages</strong>：免费、Actions 一体化，缺点是缓存策略不可控</li>\n<li><strong>Cloudflare Pages</strong>：全球边缘节点快，带宽几乎不限，构建限额大方</li>\n</ul>\n<p>部署流水线就三步：</p>\n<pre><code class=\"hljs language-bash\">node build.mjs\nnpm run build\nwrangler pages deploy dist\n</code></pre>\n<h2 id=\"h-1\">经验</h2>\n<ul>\n<li>SPA 路由需要 <code>_redirects</code> 文件：<code>/* /index.html 200</code></li>\n<li>数据 JSON 设长缓存（带 hash 更好），HTML 不缓存</li>\n<li>预览环境（PR 自动部署）对花园类站点意义不大，内容站点没有「功能回归」</li>\n</ul>\n<p>更激进的方案是把部分页面挪到边缘渲染，见 <a class=\"wikilink wikilink--ghost\" data-target=\"边缘渲染实验\" href=\"/mansheng/p/%E8%BE%B9%E7%BC%98%E6%B8%B2%E6%9F%93%E5%AE%9E%E9%AA%8C\">边缘渲染实验</a>。构建侧的优化见 <a class=\"wikilink\" data-target=\"vite-构建优化\" href=\"/mansheng/p/vite-%E6%9E%84%E5%BB%BA%E4%BC%98%E5%8C%96\">vite-构建优化</a>。</p>\n",
+  "toc": [
+    {
+      "id": "h-0",
+      "text": "对比",
+      "level": 2
+    },
+    {
+      "id": "h-1",
+      "text": "经验",
+      "level": 2
+    }
+  ],
   "outgoing": [
     {
       "id": "边缘渲染实验",

@@ -81,6 +81,18 @@ function toPlainText(body) {
     .trim();
 }
 
+// 为 h2/h3 注入锚点 id，并提取目录（嵌入块内的标题也会计入）
+function withToc(html) {
+  const toc = [];
+  let i = 0;
+  const out = html.replace(/<h([23])>([\s\S]*?)<\/h\1>/g, (_, lvl, inner) => {
+    const id = `h-${i++}`;
+    toc.push({ id, text: inner.replace(/<[^>]+>/g, '').trim(), level: Number(lvl) });
+    return `<h${lvl} id="${id}">${inner}</h${lvl}>`;
+  });
+  return { html: out, toc };
+}
+
 // ---------- 1. 扫描并解析 ----------
 const files = (await readdir(POSTS_DIR)).filter((f) => f.endsWith('.md'));
 const nodes = new Map();
@@ -282,6 +294,7 @@ await cp('vault/assets', 'public/assets', { recursive: true });
 
 for (const n of nodes.values()) {
   if (!n.exists || n.draft) continue;
+  const rendered = withToc(renderHtml(n.body, existsMap));
   const out = {
     id: n.id,
     title: n.title,
@@ -289,7 +302,8 @@ for (const n of nodes.values()) {
     tags: n.tags,
     date: n.date,
     draft: false,
-    html: renderHtml(n.body, existsMap),
+    html: rendered.html,
+    toc: rendered.toc,
     outgoing: n.links.map((t) => ({ id: t, title: titleMap.get(t) ?? t, exists: existsMap.get(t) ?? false })),
     backlinks: backlinks.get(n.id) ?? [],
   };

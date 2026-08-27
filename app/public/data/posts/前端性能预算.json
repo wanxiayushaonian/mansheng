@@ -8,7 +8,19 @@
   ],
   "date": "2026-01-08",
   "draft": false,
-  "html": "<p>性能预算不是优化手段，是约束条件：定死上限，任何提交导致超限就必须 trade-off。</p>\n<h2>本站的预算</h2>\n<ul>\n<li>首屏 JS gzip 后 &lt; 150KB</li>\n<li>graph.json &lt; 200KB（千级节点时重新评估）</li>\n<li>LCP &lt; 2.5s（4G 节流）</li>\n</ul>\n<h2>执行方式</h2>\n<p>CI 里跑 bundlesize 检查，超了直接失败。拆分策略见 <a class=\"wikilink\" data-target=\"vite-构建优化\" href=\"/mansheng/p/vite-%E6%9E%84%E5%BB%BA%E4%BC%98%E5%8C%96\">vite-构建优化</a>。文章页按需 fetch 的 JSON 不计入首屏预算，但单篇要 &lt; 50KB。</p>\n<p>最大的敌人其实是第三方脚本——每加一个，用 <a class=\"wikilink\" data-target=\"react-19-新特性\" href=\"/mansheng/p/react-19-%E6%96%B0%E7%89%B9%E6%80%A7\">react-19-新特性</a> 的 use() 思路去延迟加载都不够，最好的优化是不加。CSS 层面的小技巧（比如 <a class=\"wikilink\" data-target=\"css-容器查询\" href=\"/mansheng/p/css-%E5%AE%B9%E5%99%A8%E6%9F%A5%E8%AF%A2\">css-容器查询</a> 减少 JS 计算）也计入收益。</p>\n",
+  "html": "<p>性能预算不是优化手段，是约束条件：定死上限，任何提交导致超限就必须 trade-off。</p>\n<h2 id=\"h-0\">本站的预算</h2>\n<ul>\n<li>首屏 JS gzip 后 &lt; 150KB</li>\n<li>graph.json &lt; 200KB（千级节点时重新评估）</li>\n<li>LCP &lt; 2.5s（4G 节流）</li>\n</ul>\n<h2 id=\"h-1\">执行方式</h2>\n<p>CI 里跑 bundlesize 检查，超了直接失败。拆分策略见 <a class=\"wikilink\" data-target=\"vite-构建优化\" href=\"/mansheng/p/vite-%E6%9E%84%E5%BB%BA%E4%BC%98%E5%8C%96\">vite-构建优化</a>。文章页按需 fetch 的 JSON 不计入首屏预算，但单篇要 &lt; 50KB。</p>\n<p>最大的敌人其实是第三方脚本——每加一个，用 <a class=\"wikilink\" data-target=\"react-19-新特性\" href=\"/mansheng/p/react-19-%E6%96%B0%E7%89%B9%E6%80%A7\">react-19-新特性</a> 的 use() 思路去延迟加载都不够，最好的优化是不加。CSS 层面的小技巧（比如 <a class=\"wikilink\" data-target=\"css-容器查询\" href=\"/mansheng/p/css-%E5%AE%B9%E5%99%A8%E6%9F%A5%E8%AF%A2\">css-容器查询</a> 减少 JS 计算）也计入收益。</p>\n",
+  "toc": [
+    {
+      "id": "h-0",
+      "text": "本站的预算",
+      "level": 2
+    },
+    {
+      "id": "h-1",
+      "text": "执行方式",
+      "level": 2
+    }
+  ],
   "outgoing": [
     {
       "id": "vite-构建优化",

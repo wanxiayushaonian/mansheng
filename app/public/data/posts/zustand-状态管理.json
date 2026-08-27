@@ -8,7 +8,19 @@
   ],
   "date": "2025-01-20",
   "draft": false,
-  "html": "<p>图视图有过滤面板、focus 高亮、搜索定位，状态不少但结构扁平。Redux 太重，Context 会整树重渲染，zustand 正好。</p>\n<h2>用法</h2>\n<pre><code class=\"hljs language-ts\"><span class=\"hljs-keyword\">export</span> <span class=\"hljs-keyword\">const</span> useStore = <span class=\"hljs-title function_\">create</span>(<span class=\"hljs-function\">(<span class=\"hljs-params\">set</span>) =&gt;</span> ({\n  <span class=\"hljs-attr\">filters</span>: { <span class=\"hljs-attr\">tags</span>: [], <span class=\"hljs-attr\">showTagEdges</span>: <span class=\"hljs-literal\">true</span>, <span class=\"hljs-attr\">hideGhost</span>: <span class=\"hljs-literal\">false</span> },\n  <span class=\"hljs-attr\">toggleTag</span>: <span class=\"hljs-function\">(<span class=\"hljs-params\">t</span>) =&gt;</span> <span class=\"hljs-title function_\">set</span>(<span class=\"hljs-function\">(<span class=\"hljs-params\">s</span>) =&gt;</span> ({\n    <span class=\"hljs-attr\">filters</span>: { ...s.<span class=\"hljs-property\">filters</span>, <span class=\"hljs-attr\">tags</span>: <span class=\"hljs-title function_\">toggle</span>(s.<span class=\"hljs-property\">filters</span>.<span class=\"hljs-property\">tags</span>, t) }\n  })),\n}));\n</code></pre>\n<h2>心得</h2>\n<ul>\n<li>选择器订阅精确到字段，节点图层不会因为面板状态变化而重渲染</li>\n<li>graph.json fetch 一次缓存进 store，<a class=\"wikilink\" data-target=\"react-flow-实践\" href=\"/mansheng/p/react-flow-%E5%AE%9E%E8%B7%B5\">react-flow-实践</a> 的 useMemo 直接消费</li>\n<li>与 URL hash 同步可以用 subscribe 做，比 useEffect 干净</li>\n</ul>\n<p>状态管理选型和服务端数据（如 <a class=\"wikilink\" data-target=\"markdown-解析管线\" href=\"/mansheng/p/markdown-%E8%A7%A3%E6%9E%90%E7%AE%A1%E7%BA%BF\">markdown-解析管线</a> 的产物）要分开：服务端缓存用 SWR 思路，UI 状态才进 zustand。</p>\n",
+  "html": "<p>图视图有过滤面板、focus 高亮、搜索定位，状态不少但结构扁平。Redux 太重，Context 会整树重渲染，zustand 正好。</p>\n<h2 id=\"h-0\">用法</h2>\n<pre><code class=\"hljs language-ts\"><span class=\"hljs-keyword\">export</span> <span class=\"hljs-keyword\">const</span> useStore = <span class=\"hljs-title function_\">create</span>(<span class=\"hljs-function\">(<span class=\"hljs-params\">set</span>) =&gt;</span> ({\n  <span class=\"hljs-attr\">filters</span>: { <span class=\"hljs-attr\">tags</span>: [], <span class=\"hljs-attr\">showTagEdges</span>: <span class=\"hljs-literal\">true</span>, <span class=\"hljs-attr\">hideGhost</span>: <span class=\"hljs-literal\">false</span> },\n  <span class=\"hljs-attr\">toggleTag</span>: <span class=\"hljs-function\">(<span class=\"hljs-params\">t</span>) =&gt;</span> <span class=\"hljs-title function_\">set</span>(<span class=\"hljs-function\">(<span class=\"hljs-params\">s</span>) =&gt;</span> ({\n    <span class=\"hljs-attr\">filters</span>: { ...s.<span class=\"hljs-property\">filters</span>, <span class=\"hljs-attr\">tags</span>: <span class=\"hljs-title function_\">toggle</span>(s.<span class=\"hljs-property\">filters</span>.<span class=\"hljs-property\">tags</span>, t) }\n  })),\n}));\n</code></pre>\n<h2 id=\"h-1\">心得</h2>\n<ul>\n<li>选择器订阅精确到字段，节点图层不会因为面板状态变化而重渲染</li>\n<li>graph.json fetch 一次缓存进 store，<a class=\"wikilink\" data-target=\"react-flow-实践\" href=\"/mansheng/p/react-flow-%E5%AE%9E%E8%B7%B5\">react-flow-实践</a> 的 useMemo 直接消费</li>\n<li>与 URL hash 同步可以用 subscribe 做，比 useEffect 干净</li>\n</ul>\n<p>状态管理选型和服务端数据（如 <a class=\"wikilink\" data-target=\"markdown-解析管线\" href=\"/mansheng/p/markdown-%E8%A7%A3%E6%9E%90%E7%AE%A1%E7%BA%BF\">markdown-解析管线</a> 的产物）要分开：服务端缓存用 SWR 思路，UI 状态才进 zustand。</p>\n",
+  "toc": [
+    {
+      "id": "h-0",
+      "text": "用法",
+      "level": 2
+    },
+    {
+      "id": "h-1",
+      "text": "心得",
+      "level": 2
+    }
+  ],
   "outgoing": [
     {
       "id": "react-flow-实践",

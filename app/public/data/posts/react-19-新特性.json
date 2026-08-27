@@ -8,7 +8,19 @@
   ],
   "date": "2025-12-01",
   "draft": false,
-  "html": "<p>React 19 声势很大，但本站实际用到的只有三个：ref 作为 prop、<code>use()</code>、以及 Actions 的表单处理。</p>\n<h2>清单</h2>\n<ul>\n<li><strong>ref as prop</strong>：函数组件直接收 ref，告别 forwardRef 样板</li>\n<li><strong>use()</strong>：在 render 里读 promise，配合 Suspense 处理 graph.json 加载很顺</li>\n<li><strong>useOptimistic</strong>：评论提交先乐观渲染</li>\n</ul>\n<pre><code class=\"hljs language-tsx\"><span class=\"hljs-keyword\">function</span> <span class=\"hljs-title function_\">GardenNode</span>(<span class=\"hljs-params\">{ ref, data }</span>) {\n  <span class=\"hljs-keyword\">return</span> <span class=\"language-xml\"><span class=\"hljs-tag\">&lt;<span class=\"hljs-name\">div</span> <span class=\"hljs-attr\">ref</span>=<span class=\"hljs-string\">{ref}</span>&gt;</span>{data.title}<span class=\"hljs-tag\">&lt;/<span class=\"hljs-name\">div</span>&gt;</span></span>;\n}\n</code></pre>\n<h2>没用上的</h2>\n<p>Server Components——本站是纯静态 SPA，没有服务端。RSC 的心智模型值得学（见 <a class=\"wikilink\" data-target=\"服务端组件理解\" href=\"/mansheng/p/%E6%9C%8D%E5%8A%A1%E7%AB%AF%E7%BB%84%E4%BB%B6%E7%90%86%E8%A7%A3\">服务端组件理解</a>），但别为用而用。状态层依然是 <a class=\"wikilink\" data-target=\"zustand-状态管理\" href=\"/mansheng/p/zustand-%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86\">zustand-状态管理</a>，React 19 没有改变客户端状态管理的基本格局。</p>\n",
+  "html": "<p>React 19 声势很大，但本站实际用到的只有三个：ref 作为 prop、<code>use()</code>、以及 Actions 的表单处理。</p>\n<h2 id=\"h-0\">清单</h2>\n<ul>\n<li><strong>ref as prop</strong>：函数组件直接收 ref，告别 forwardRef 样板</li>\n<li><strong>use()</strong>：在 render 里读 promise，配合 Suspense 处理 graph.json 加载很顺</li>\n<li><strong>useOptimistic</strong>：评论提交先乐观渲染</li>\n</ul>\n<pre><code class=\"hljs language-tsx\"><span class=\"hljs-keyword\">function</span> <span class=\"hljs-title function_\">GardenNode</span>(<span class=\"hljs-params\">{ ref, data }</span>) {\n  <span class=\"hljs-keyword\">return</span> <span class=\"language-xml\"><span class=\"hljs-tag\">&lt;<span class=\"hljs-name\">div</span> <span class=\"hljs-attr\">ref</span>=<span class=\"hljs-string\">{ref}</span>&gt;</span>{data.title}<span class=\"hljs-tag\">&lt;/<span class=\"hljs-name\">div</span>&gt;</span></span>;\n}\n</code></pre>\n<h2 id=\"h-1\">没用上的</h2>\n<p>Server Components——本站是纯静态 SPA，没有服务端。RSC 的心智模型值得学（见 <a class=\"wikilink\" data-target=\"服务端组件理解\" href=\"/mansheng/p/%E6%9C%8D%E5%8A%A1%E7%AB%AF%E7%BB%84%E4%BB%B6%E7%90%86%E8%A7%A3\">服务端组件理解</a>），但别为用而用。状态层依然是 <a class=\"wikilink\" data-target=\"zustand-状态管理\" href=\"/mansheng/p/zustand-%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86\">zustand-状态管理</a>，React 19 没有改变客户端状态管理的基本格局。</p>\n",
+  "toc": [
+    {
+      "id": "h-0",
+      "text": "清单",
+      "level": 2
+    },
+    {
+      "id": "h-1",
+      "text": "没用上的",
+      "level": 2
+    }
+  ],
   "outgoing": [
     {
       "id": "服务端组件理解",

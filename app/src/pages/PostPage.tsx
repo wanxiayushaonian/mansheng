@@ -14,6 +14,7 @@ import {
 import type { GraphData, Post } from './chrome'
 import { useDocumentMeta } from '@/hooks/useDocumentMeta'
 import { useGraphStore } from '@/store'
+import Comments from '@/components/Comments'
 
 const EASE: [number, number, number, number] = [0.22, 0.8, 0.32, 1]
 
@@ -29,7 +30,7 @@ const ARTICLE_CSS = `
 .post-body a.wikilink--ghost { color: ${C.ink3}; border-bottom: 1px dashed ${C.ink3}; cursor: help; }
 .post-body a[href^="http"]::after { content: " ↗"; font-size: .8em; }
 .post-body code:not(pre code) { font-family: "JetBrains Mono",ui-monospace,monospace; font-size: .85em; background: ${C.paper2}; border-radius: 4px; padding: 2px 6px; }
-.post-body pre { position: relative; background: #EFE8DB; border: 1px solid ${C.line}; border-radius: 10px; padding: 16px 18px; overflow-x: auto; margin: 0 0 1.2em; }
+.post-body pre { position: relative; background: ${C.paper2}; border: 1px solid ${C.line}; border-radius: 10px; padding: 16px 18px; overflow-x: auto; margin: 0 0 1.2em; }
 .post-body pre code { font-family: "JetBrains Mono",ui-monospace,monospace; font-size: .85rem; line-height: 1.7; background: transparent; padding: 0; }
 .post-body .hljs-keyword, .post-body .hljs-selector-tag { color: ${C.clay}; }
 .post-body .hljs-string, .post-body .hljs-attr { color: ${C.moss}; }
@@ -55,6 +56,7 @@ const ARTICLE_CSS = `
 .post-body .mermaid-embed svg { max-width: 100%; height: auto; }
 .post-body .katex-display { overflow-x: auto; overflow-y: hidden; padding: 4px 0; }
 .post-body .katex { font-size: 1.05em; }
+.post-body h2, .post-body h3 { scroll-margin-top: 84px; }
 `
 
 export default function PostPage() {
@@ -321,11 +323,15 @@ export default function PostPage() {
                   <PrevNextCard dir="next" id={prevNext.next.id} title={prevNext.next.title} date={prevNext.next.date} tag={prevNext.next.tags[0]} />
                 ) : <span />}
               </motion.nav>
+
+              {/* 讨论（配置了 giscus 环境变量才出现） */}
+              <Comments title={post.title} />
             </div>
 
             {/* ≥1200px 右侧 sticky links-panel */}
             <aside className="hidden min-[1200px]:col-start-3 min-[1200px]:block">
-              <div className="sticky top-[88px] max-h-[calc(100dvh-104px)] overflow-y-auto pr-1 pt-8">
+              <div className="sticky top-[88px] max-h-[calc(100dvh-104px)] space-y-8 overflow-y-auto pr-1 pt-8">
+                {post.toc && post.toc.length > 1 && <Toc toc={post.toc} />}
                 <LinksPanel post={post} graph={graph} onGhost={showHint} />
               </div>
             </aside>
@@ -343,6 +349,57 @@ export default function PostPage() {
         <Network size={18} />
       </Link>
     </PageChrome>
+  )
+}
+
+/* ---------------- 目录（滚动高亮当前节） ---------------- */
+
+function Toc({ toc }: { toc: NonNullable<Post['toc']> }) {
+  const [active, setActive] = useState(toc[0]?.id ?? '')
+
+  useEffect(() => {
+    const onScroll = () => {
+      let cur = ''
+      for (const h of toc) {
+        const el = document.getElementById(h.id)
+        if (el && el.getBoundingClientRect().top < 140) cur = h.id
+      }
+      setActive(cur || toc[0]?.id || '')
+    }
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [toc])
+
+  return (
+    <section aria-label="目录">
+      <div className="mb-2 uppercase" style={{ fontSize: '0.75rem', letterSpacing: '0.08em', color: C.ink3 }}>
+        目录
+      </div>
+      <ul className="space-y-0.5" style={{ borderLeft: `1px solid ${C.line}` }}>
+        {toc.map((h) => (
+          <li key={h.id}>
+            <a
+              href={`#${h.id}`}
+              onClick={(e) => {
+                e.preventDefault()
+                document.getElementById(h.id)?.scrollIntoView({ behavior: 'smooth' })
+              }}
+              className="block truncate py-1 transition-colors hover:text-[#A45A3C]"
+              style={{
+                paddingLeft: h.level === 2 ? 12 : 26,
+                fontSize: h.level === 2 ? '0.82rem' : '0.78rem',
+                color: active === h.id ? C.accent : C.ink2,
+                fontWeight: active === h.id ? 600 : 400,
+                boxShadow: `inset 2px 0 0 ${active === h.id ? C.accent : 'transparent'}`,
+              }}
+            >
+              {h.text}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
   )
 }
 

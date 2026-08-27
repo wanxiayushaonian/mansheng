@@ -8,7 +8,19 @@
   ],
   "date": "2025-09-02",
   "draft": false,
-  "html": "<p>知识图谱的最小单元是三元组（subject, predicate, object）。个人博客其实就是一个简版图谱：文章是节点，wikilink 是谓词为「引用」的边。</p>\n<h2>概念地图</h2>\n<ul>\n<li><strong>实体</strong>：文章、标签、占位节点</li>\n<li><strong>关系</strong>：link（强）与 tag 共现（弱）</li>\n<li><strong>属性</strong>：date、type、degree</li>\n</ul>\n<p>本站没有引入 RDF/SPARQL，JSON 足矣——<a class=\"wikilink\" data-target=\"图数据库选型\" href=\"/mansheng/p/%E5%9B%BE%E6%95%B0%E6%8D%AE%E5%BA%93%E9%80%89%E5%9E%8B\">图数据库选型</a> 讨论了什么时候才需要真正的图数据库。</p>\n<h2>可视化</h2>\n<p>把图谱画出来才有直觉。<a class=\"wikilink\" data-target=\"d3-force-布局\" href=\"/mansheng/p/d3-force-%E5%B8%83%E5%B1%80\">d3-force-布局</a> 负责坐标，前端用 React Flow 渲染。度（degree）映射节点大小，让读者一眼看到枢纽文章。<a class=\"wikilink\" data-target=\"backlinks-的价值\" href=\"/mansheng/p/backlinks-%E7%9A%84%E4%BB%B7%E5%80%BC\">backlinks-的价值</a> 是图谱思维在阅读端的最佳落点：没有图结构，就没有反链这个概念。</p>\n",
+  "html": "<p>知识图谱的最小单元是三元组（subject, predicate, object）。个人博客其实就是一个简版图谱：文章是节点，wikilink 是谓词为「引用」的边。</p>\n<h2 id=\"h-0\">概念地图</h2>\n<ul>\n<li><strong>实体</strong>：文章、标签、占位节点</li>\n<li><strong>关系</strong>：link（强）与 tag 共现（弱）</li>\n<li><strong>属性</strong>：date、type、degree</li>\n</ul>\n<p>本站没有引入 RDF/SPARQL，JSON 足矣——<a class=\"wikilink\" data-target=\"图数据库选型\" href=\"/mansheng/p/%E5%9B%BE%E6%95%B0%E6%8D%AE%E5%BA%93%E9%80%89%E5%9E%8B\">图数据库选型</a> 讨论了什么时候才需要真正的图数据库。</p>\n<h2 id=\"h-1\">可视化</h2>\n<p>把图谱画出来才有直觉。<a class=\"wikilink\" data-target=\"d3-force-布局\" href=\"/mansheng/p/d3-force-%E5%B8%83%E5%B1%80\">d3-force-布局</a> 负责坐标，前端用 React Flow 渲染。度（degree）映射节点大小，让读者一眼看到枢纽文章。<a class=\"wikilink\" data-target=\"backlinks-的价值\" href=\"/mansheng/p/backlinks-%E7%9A%84%E4%BB%B7%E5%80%BC\">backlinks-的价值</a> 是图谱思维在阅读端的最佳落点：没有图结构，就没有反链这个概念。</p>\n",
+  "toc": [
+    {
+      "id": "h-0",
+      "text": "概念地图",
+      "level": 2
+    },
+    {
+      "id": "h-1",
+      "text": "可视化",
+      "level": 2
+    }
+  ],
   "outgoing": [
     {
       "id": "图数据库选型",

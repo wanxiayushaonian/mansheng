@@ -238,6 +238,32 @@ async function captureRoute(cdpPort, httpPort, route, readySel) {
   }
 }
 
+/** PWA 图标：data URL 页面按 size 截图 */
+async function captureIcon(cdpPort, size) {
+  const r = Math.round(size * 0.62)
+  const glyph = Math.round(size * 0.34)
+  const html = `<body style="margin:0"><div style="width:${size}px;height:${size}px;display:flex;align-items:center;justify-content:center;background:%23F7F3EC"><div style="display:flex;align-items:center;justify-content:center;width:${r}px;height:${r}px;border-radius:50%25;background:%237D8B6A"><span style="font-family:'Noto Serif SC',serif;font-weight:700;font-size:${glyph}px;color:%23F7F3EC;line-height:1">蔓</span></div></div></body>`
+  let target
+  try {
+    target = await (await fetch(`http://127.0.0.1:${cdpPort}/json/new?${encodeURIComponent(`data:text/html;charset=utf-8,${html}`)}`, { method: 'PUT' })).json()
+  } catch {
+    target = await (await fetch(`http://127.0.0.1:${cdpPort}/json/new?${encodeURIComponent(`data:text/html;charset=utf-8,${html}`)}`)).json()
+  }
+  const ws = await connectWs(target.webSocketDebuggerUrl)
+  try {
+    await cdpCallRaw(ws, 'Emulation.setDeviceMetricsOverride', {
+      width: size, height: size, deviceScaleFactor: 1, mobile: false,
+    })
+    await new Promise((r2) => setTimeout(r2, 600))
+    const shot = await cdpCallRaw(ws, 'Page.captureScreenshot', { format: 'png' })
+    if (!shot?.data) throw new Error('icon capture 无数据')
+    return Buffer.from(shot.data, 'base64')
+  } finally {
+    ws.close()
+    fetch(`http://127.0.0.1:${cdpPort}/json/close/${target.id}`).catch(() => {})
+  }
+}
+
 /** 路径段安全检查：拒绝路径分隔符 / 目录穿越 */
 function safeSegment(s) {
   return s && !s.includes('/') && !s.includes('\\') && !s.includes('..') && !s.startsWith('.')
@@ -297,6 +323,13 @@ async function main() {
       }
     }
     console.log(`prerender: og 分享卡 ${ogOk}/${ogPosts.length} 张`)
+
+    // PWA 图标
+    await mkdir(join(DIST, 'icons'), { recursive: true })
+    for (const size of [192, 512]) {
+      await writeFile(join(DIST, 'icons', `icon-${size}.png`), await captureIcon(chromeProc.port, size))
+    }
+    console.log('prerender: PWA 图标 2 张')
 
     // sitemap.xml + robots.txt
     const urls = routes.map((r) => `  <url><loc>${SITE_URL}${r.route === '/' ? '/' : r.route}</loc></url>`)

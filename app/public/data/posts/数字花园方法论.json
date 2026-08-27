@@ -8,7 +8,19 @@
   ],
   "date": "2025-06-01",
   "draft": false,
-  "html": "<p>博客是按时间排列的，维基是按主题排列的，数字花园是按关系生长的。它允许半成品存在：文章可以是常青的（持续修订），也可以是刚发芽的 stub。</p>\n<h2>三条原则</h2>\n<ol>\n<li><strong>链接优先于分类</strong>。不写&quot;归档&quot;，只写链接，结构从链接密度里自然涌现</li>\n<li><strong>允许占位</strong>。链接可以先于内容存在，ghost 节点是花园里的空地</li>\n<li><strong>持续修订</strong>。旧文会不断长出新链接，而不是发完就死</li>\n</ol>\n<h2>反对意见</h2>\n<p>批评者说花园对读者不友好——没有起点、没有顺序。我的回应是：用 <a class=\"wikilink\" data-target=\"backlinks-的价值\" href=\"/mansheng/p/backlinks-%E7%9A%84%E4%BB%B7%E5%80%BC\">backlinks-的价值</a> 里说的反链面板和标签聚合页提供多个入口，再配一条「编辑精选」路径即可。</p>\n<p>实践层面的工具链见 <a class=\"wikilink\" data-target=\"obsidian-工作流\" href=\"/mansheng/p/obsidian-%E5%B7%A5%E4%BD%9C%E6%B5%81\">obsidian-工作流</a>，理念源头可以追溯到 <a class=\"wikilink wikilink--ghost\" data-target=\"常青笔记\" href=\"/mansheng/p/%E5%B8%B8%E9%9D%92%E7%AC%94%E8%AE%B0\">常青笔记</a> 那套卡片盒传统。</p>\n",
+  "html": "<p>博客是按时间排列的，维基是按主题排列的，数字花园是按关系生长的。它允许半成品存在：文章可以是常青的（持续修订），也可以是刚发芽的 stub。</p>\n<h2 id=\"h-0\">三条原则</h2>\n<ol>\n<li><strong>链接优先于分类</strong>。不写&quot;归档&quot;，只写链接，结构从链接密度里自然涌现</li>\n<li><strong>允许占位</strong>。链接可以先于内容存在，ghost 节点是花园里的空地</li>\n<li><strong>持续修订</strong>。旧文会不断长出新链接，而不是发完就死</li>\n</ol>\n<h2 id=\"h-1\">反对意见</h2>\n<p>批评者说花园对读者不友好——没有起点、没有顺序。我的回应是：用 <a class=\"wikilink\" data-target=\"backlinks-的价值\" href=\"/mansheng/p/backlinks-%E7%9A%84%E4%BB%B7%E5%80%BC\">backlinks-的价值</a> 里说的反链面板和标签聚合页提供多个入口，再配一条「编辑精选」路径即可。</p>\n<p>实践层面的工具链见 <a class=\"wikilink\" data-target=\"obsidian-工作流\" href=\"/mansheng/p/obsidian-%E5%B7%A5%E4%BD%9C%E6%B5%81\">obsidian-工作流</a>，理念源头可以追溯到 <a class=\"wikilink wikilink--ghost\" data-target=\"常青笔记\" href=\"/mansheng/p/%E5%B8%B8%E9%9D%92%E7%AC%94%E8%AE%B0\">常青笔记</a> 那套卡片盒传统。</p>\n",
+  "toc": [
+    {
+      "id": "h-0",
+      "text": "三条原则",
+      "level": 2
+    },
+    {
+      "id": "h-1",
+      "text": "反对意见",
+      "level": 2
+    }
+  ],
   "outgoing": [
     {
       "id": "backlinks-的价值",

@@ -79,6 +79,7 @@ function GardenNodeInner({ data, selected }: NodeProps<GardenNodeType>) {
   const { zoom } = useViewport()
   const setHoverId = useGraphStore((s) => s.setHover)
   const [hover, setHover] = useState(false)
+  const [kbFocus, setKbFocus] = useState(false)
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const size = nodeSize(node.degree)
@@ -109,7 +110,7 @@ function GardenNodeInner({ data, selected }: NodeProps<GardenNodeType>) {
   }
 
   const ring =
-    selected || focused || highlighted || inPath
+    selected || focused || highlighted || inPath || kbFocus
       ? `0 0 0 2px var(--accent-color)`
       : undefined
 
@@ -119,6 +120,20 @@ function GardenNodeInner({ data, selected }: NodeProps<GardenNodeType>) {
       style={{ opacity: dimmed || 1, transition: 'opacity 200ms ease' }}
       onMouseEnter={onEnter}
       onMouseLeave={onLeave}
+      tabIndex={0}
+      role="button"
+      aria-label={`${node.title}${node.exists ? '' : '（待写种子）'}`}
+      onFocus={(e) => {
+        if (e.target === e.currentTarget) setKbFocus(true)
+      }}
+      onBlur={() => setKbFocus(false)}
+      onKeyDown={(e) => {
+        // Enter / Space 触发与点击一致的行为：转发到 React Flow 的节点点击处理
+        if ((e.key === 'Enter' || e.key === ' ') && e.target === e.currentTarget) {
+          e.preventDefault()
+          ;(e.currentTarget.closest('.react-flow__node') as HTMLElement | null)?.click()
+        }
+      }}
     >
       {/* 两个隐形 Handle 都钉在圆形正中心：连线走圆心到圆心的直线 */}
       <Handle
@@ -152,8 +167,8 @@ function GardenNodeInner({ data, selected }: NodeProps<GardenNodeType>) {
           background: isGhost
             ? 'transparent'
             : read
-              ? 'color-mix(in srgb, ' + color + ' 40%, #EFE9DE)'
-              : 'color-mix(in srgb, ' + color + ' 88%, white)',
+              ? 'color-mix(in srgb, ' + color + ' 40%, var(--dot-mix))'
+              : 'color-mix(in srgb, ' + color + ' 88%, var(--dot-mix))',
           border: isGhost ? '1.5px dashed #A39A8A' : 'none',
           boxShadow: ring,
           cursor: isGhost ? 'help' : 'pointer',
@@ -164,7 +179,7 @@ function GardenNodeInner({ data, selected }: NodeProps<GardenNodeType>) {
           className="gnode__label absolute top-full mt-1 text-center text-xs font-medium text-ink whitespace-nowrap"
           style={{
             letterSpacing: '0.04em',
-            color: isGhost || read ? '#8B8375' : undefined,
+            color: isGhost || read ? 'var(--ink-3)' : undefined,
           }}
         >
           {node.title.length > 12 ? `${node.title.slice(0, 12)}…` : node.title}

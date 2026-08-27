@@ -28,6 +28,28 @@ export interface PathMode {
   to: string | null
 }
 
+export type Theme = 'light' | 'dark'
+
+/** 把主题落到 <html data-theme>，供 CSS token 切换 */
+export function applyTheme(theme: Theme) {
+  document.documentElement.dataset.theme = theme
+}
+
+const THEME_KEY = 'mansheng.theme'
+function initTheme(): Theme {
+  try {
+    const saved = localStorage.getItem(THEME_KEY)
+    if (saved === 'dark' || saved === 'light') return saved
+  } catch {
+    /* 忽略 */
+  }
+  try {
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+  } catch {
+    return 'light'
+  }
+}
+
 /** localStorage 读写已读记录（postId → 首次读完时间戳） */
 const READ_KEY = 'mansheng.read'
 function loadReadMap(): Record<string, number> {
@@ -53,6 +75,8 @@ interface GraphState {
   reloadNonce: number
   /** 已读文章（持久化到 localStorage） */
   readMap: Record<string, number>
+  /** 明暗主题（持久化，默认跟随系统） */
+  theme: Theme
 
   filters: Filters
   /** 聚焦节点 id（P1 聚焦模式） */
@@ -75,6 +99,7 @@ interface GraphState {
   /** 清除错误并触发重新加载 */
   reload: () => void
   markRead: (id: string) => void
+  toggleTheme: () => void
 
   toggleTag: (t: string) => void
   clearTags: () => void
@@ -99,6 +124,7 @@ export const useGraphStore = create<GraphState>((set) => ({
   error: null,
   reloadNonce: 0,
   readMap: loadReadMap(),
+  theme: initTheme(),
 
   filters: { tags: [], typesOff: [], hideWeakEdges: false, hideGhost: false },
   focusId: null,
@@ -120,6 +146,17 @@ export const useGraphStore = create<GraphState>((set) => ({
       const next = { ...s.readMap, [id]: Date.now() }
       saveReadMap(next)
       return { readMap: next }
+    }),
+  toggleTheme: () =>
+    set((s) => {
+      const next: Theme = s.theme === 'dark' ? 'light' : 'dark'
+      try {
+        localStorage.setItem(THEME_KEY, next)
+      } catch {
+        /* 忽略 */
+      }
+      applyTheme(next)
+      return { theme: next }
     }),
 
   toggleTag: (t) =>

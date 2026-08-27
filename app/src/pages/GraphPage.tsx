@@ -13,7 +13,7 @@ import {
 import type { Edge, Node } from '@xyflow/react'
 import '@xyflow/react/dist/style.css'
 import { AnimatePresence, motion } from 'framer-motion'
-import { X } from 'lucide-react'
+import { Dices, X } from 'lucide-react'
 
 import { useGraph } from '@/hooks/useGraph'
 import {
@@ -123,6 +123,7 @@ function GraphCanvas({ graph }: { graph: NonNullable<ReturnType<typeof useGraph>
     pathMode,
     highlightId,
     readMap,
+    theme,
     setFocus,
     setLocalMode,
     setPathMode,
@@ -324,6 +325,14 @@ function GraphCanvas({ graph }: { graph: NonNullable<ReturnType<typeof useGraph>
     [setCenter, setHighlight, setGhostToast],
   )
 
+  /** 随机漫游：飞到一个随机节点 */
+  const roam = useCallback(() => {
+    const pool = rfNodes.filter((n) => byId.get(n.id)?.exists && n.id !== focusId)
+    if (!pool.length) return
+    const pick = byId.get(pool[Math.floor(Math.random() * pool.length)].id)
+    if (pick) flyTo(pick, 1.3)
+  }, [rfNodes, byId, focusId, flyTo])
+
   const onNodeClick = useCallback(
     (_: unknown, rfNode: Node) => {
       const n = byId.get(rfNode.id)
@@ -379,16 +388,36 @@ function GraphCanvas({ graph }: { graph: NonNullable<ReturnType<typeof useGraph>
         proOptions={{ hideAttribution: true }}
       >
         <ViewportWatcher onZoom={setZoom} />
-        <Background variant={BackgroundVariant.Dots} gap={28} size={1.2} color="#E0D7C6" />
+        <Background
+          variant={BackgroundVariant.Dots}
+          gap={28}
+          size={1.2}
+          color={theme === 'dark' ? '#3b342b' : '#E0D7C6'}
+        />
         <Controls position="bottom-left" showInteractive={false} />
+        {/* 随机漫游 */}
+        <motion.button
+          whileTap={{ rotate: 180 }}
+          className="float-panel absolute left-4 bottom-[132px] flex h-7 w-7 items-center justify-center text-ink-2 hover:text-accentc"
+          style={{ zIndex: 20 }}
+          onClick={roam}
+          aria-label="随机漫游"
+          title="随机漫游"
+        >
+          <Dices size={13} />
+        </motion.button>
         <MiniMap
           position="bottom-right"
           pannable
           zoomable
           className="hidden md:block"
-          style={{ width: 176, height: 120, background: '#F1EBE0' }}
-          maskColor="rgba(46,42,36,0.06)"
-          maskStrokeColor="#C4B9A4"
+          style={{
+            width: 176,
+            height: 120,
+            background: theme === 'dark' ? '#26211c' : '#F1EBE0',
+          }}
+          maskColor={theme === 'dark' ? 'rgba(234,227,212,0.08)' : 'rgba(46,42,36,0.06)'}
+          maskStrokeColor={theme === 'dark' ? '#4C4437' : '#C4B9A4'}
           nodeColor={(n) => {
             const gn = byId.get(n.id)
             return gn ? (gn.exists ? getNodeColor(gn) : '#A39A8A') : '#A39A8A'
