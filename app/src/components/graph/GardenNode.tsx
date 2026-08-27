@@ -15,6 +15,10 @@ export interface GardenNodeRFData extends Record<string, unknown> {
   focused: boolean
   /** 已读：圆点去饱和 + 标签变淡 */
   read: boolean
+  /** 在最短路径上：accent 圆环 */
+  inPath: boolean
+  /** 生长动画进行中：新出现的节点以 spring 入场 */
+  growing: boolean
 }
 
 export type GardenNodeType = Node<GardenNodeRFData, 'garden'>
@@ -71,7 +75,7 @@ function HoverCard({ node }: { node: GraphNodeData }) {
 }
 
 function GardenNodeInner({ data, selected }: NodeProps<GardenNodeType>) {
-  const { node, dimmed, highlighted, focused, read } = data
+  const { node, dimmed, highlighted, focused, read, inPath, growing } = data
   const { zoom } = useViewport()
   const setHoverId = useGraphStore((s) => s.setHover)
   const [hover, setHover] = useState(false)
@@ -105,7 +109,7 @@ function GardenNodeInner({ data, selected }: NodeProps<GardenNodeType>) {
   }
 
   const ring =
-    selected || focused || highlighted
+    selected || focused || highlighted || inPath
       ? `0 0 0 2px var(--accent-color)`
       : undefined
 
@@ -132,11 +136,14 @@ function GardenNodeInner({ data, selected }: NodeProps<GardenNodeType>) {
         }}
       />
       <motion.div
+        initial={growing ? { scale: 0 } : false}
         animate={highlighted ? { scale: [1, 1.25, 1, 1.25, 1] } : { scale: hover ? 1.12 : 1 }}
         transition={
           highlighted
             ? { duration: 1.2, times: [0, 0.25, 0.5, 0.75, 1] }
-            : { duration: 0.18, ease: [0.22, 0.8, 0.32, 1] }
+            : growing
+              ? { type: 'spring', stiffness: 260, damping: 17 }
+              : { duration: 0.18, ease: [0.22, 0.8, 0.32, 1] }
         }
         style={{
           width: size,

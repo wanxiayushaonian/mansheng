@@ -22,6 +22,12 @@ export interface GhostToast {
   title: string
 }
 
+/** 寻路模式：from 为 null 表示待选起点 */
+export interface PathMode {
+  from: string | null
+  to: string | null
+}
+
 /** localStorage 读写已读记录（postId → 首次读完时间戳） */
 const READ_KEY = 'mansheng.read'
 function loadReadMap(): Record<string, number> {
@@ -56,6 +62,8 @@ interface GraphState {
   timelinePlaying: boolean
   /** 局部展开模式（P3） */
   localMode: LocalMode | null
+  /** 最短路径发现模式 */
+  pathMode: PathMode | null
   /** 搜索命中的短暂高亮节点 */
   highlightId: string | null
   hoverId: string | null
@@ -79,6 +87,7 @@ interface GraphState {
   setTimelineDate: (d: string | null) => void
   setTimelinePlaying: (v: boolean) => void
   setLocalMode: (m: LocalMode | null) => void
+  setPathMode: (p: PathMode | null) => void
   setHighlight: (id: string | null) => void
   setHover: (id: string | null) => void
   setGhostToast: (t: GhostToast | null) => void
@@ -95,6 +104,7 @@ export const useGraphStore = create<GraphState>((set) => ({
   focusId: null,
   timelineDate: null,
   timelinePlaying: false,
+  pathMode: null,
   localMode: null,
   highlightId: null,
   hoverId: null,
@@ -139,6 +149,7 @@ export const useGraphStore = create<GraphState>((set) => ({
   setTimelineDate: (timelineDate) => set({ timelineDate }),
   setTimelinePlaying: (timelinePlaying) => set({ timelinePlaying }),
   setLocalMode: (localMode) => set({ localMode }),
+  setPathMode: (pathMode) => set({ pathMode }),
   setHighlight: (highlightId) => set({ highlightId }),
   setHover: (hoverId) => set({ hoverId }),
   setGhostToast: (ghostToast) => set({ ghostToast }),
@@ -172,6 +183,35 @@ export function bfsWithin(adj: Map<string, Set<string>>, rootId: string, depth: 
     frontier = next
   }
   return seen
+}
+
+/** BFS 最短路径（parent 追踪），返回含首尾的 id 序列；不连通返回 null */
+export function bfsPath(
+  adj: Map<string, Set<string>>,
+  from: string,
+  to: string,
+): string[] | null {
+  if (from === to) return [from]
+  const prev = new Map<string, string | null>([[from, null]])
+  const queue = [from]
+  for (let qi = 0; qi < queue.length; qi++) {
+    const cur = queue[qi]!
+    for (const nb of adj.get(cur) ?? []) {
+      if (prev.has(nb)) continue
+      prev.set(nb, cur)
+      if (nb === to) {
+        const path: string[] = []
+        let step: string | null = to
+        while (step) {
+          path.unshift(step)
+          step = prev.get(step) ?? null
+        }
+        return path[0] === from ? path : null
+      }
+      queue.push(nb)
+    }
+  }
+  return null
 }
 
 /** 节点是否通过当前过滤器（不含 focus/local/timeline 部分） */

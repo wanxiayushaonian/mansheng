@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { Funnel, X } from 'lucide-react'
+import { Funnel, Route, X } from 'lucide-react'
 import { useGraphStore } from '@/store'
 import TagChip from '@/components/TagChip'
 import { cn } from '@/lib/utils'
@@ -47,7 +47,8 @@ export default function FilterPanel({
   const graph = useGraphStore((s) => s.graph)
   const filters = useGraphStore((s) => s.filters)
   const readMap = useGraphStore((s) => s.readMap)
-  const { toggleTag, clearTags, toggleType, setHideWeakEdges, setHideGhost } = useGraphStore()
+  const pathMode = useGraphStore((s) => s.pathMode)
+  const { toggleTag, clearTags, toggleType, setHideWeakEdges, setHideGhost, setPathMode, setFocus, setLocalMode } = useGraphStore()
   const [open, setOpen] = useState(() => window.innerWidth >= 1200)
 
   useEffect(() => {
@@ -107,6 +108,26 @@ export default function FilterPanel({
             </div>
 
             <div className="mt-3 pt-2 border-t border-line">
+              <button
+                type="button"
+                onClick={() => {
+                  const next = !pathMode
+                  setPathMode(next ? { from: null, to: null } : null)
+                  if (next) {
+                    setFocus(null)
+                    setLocalMode(null)
+                  }
+                }}
+                className={cn(
+                  'flex w-full items-center justify-between py-1.5 text-sm',
+                  pathMode ? 'text-accentc' : 'text-ink-2 hover:text-ink',
+                )}
+              >
+                <span className="inline-flex items-center gap-1.5">
+                  <Route size={13} /> 节点寻路
+                </span>
+                <span className="text-[0.7rem] text-ink-3">{pathMode ? '进行中' : '点选两点'}</span>
+              </button>
               <Toggle
                 on={filters.hideWeakEdges}
                 onChange={setHideWeakEdges}

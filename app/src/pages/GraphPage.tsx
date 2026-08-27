@@ -16,7 +16,9 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { X } from 'lucide-react'
 
 import { useGraph } from '@/hooks/useGraph'
-import { bfsWithin, buildAdjacency, nodePassesFilters, useGraphStore } from '@/store'
+import {
+  bfsPath, bfsWithin, buildAdjacency, nodePassesFilters, useGraphStore,
+} from '@/store'
 import { getNodeColor } from '@/lib/colors'
 import type { GraphNodeData } from '@/types/graph'
 import GardenNode from '@/components/graph/GardenNode'
@@ -116,11 +118,14 @@ function GraphCanvas({ graph }: { graph: NonNullable<ReturnType<typeof useGraph>
     focusId,
     hoverId,
     timelineDate,
+    timelinePlaying,
     localMode,
+    pathMode,
     highlightId,
     readMap,
     setFocus,
     setLocalMode,
+    setPathMode,
     setHighlight,
     setGhostToast,
     setFilters,
@@ -147,6 +152,17 @@ function GraphCanvas({ graph }: { graph: NonNullable<ReturnType<typeof useGraph>
     () => (localMode ? bfsWithin(adj, localMode.rootId, localMode.depth) : null),
     [adj, localMode],
   )
+  // 最短路径：节点集合 + 无向边键集合（"a|b" 取排序对）
+  const pathResult = useMemo(() => {
+    if (!pathMode?.from || !pathMode?.to) return null
+    const p = bfsPath(adj, pathMode.from, pathMode.to)
+    if (!p) return { ids: new Set<string>(), edges: new Set<string>(), found: false as const }
+    return {
+      ids: new Set(p),
+      edges: new Set(p.slice(1).map((n, i) => [p[i], n].sort().join('|'))),
+      found: true as const,
+    }
+  }, [adj, pathMode])
 
   const isVisible = useCallback(
     (n: GraphNodeData) => {
@@ -169,20 +185,26 @@ function GraphCanvas({ graph }: { graph: NonNullable<ReturnType<typeof useGraph>
         draggable: false,
         data: {
           node: n,
-          // hover 邻域优先于聚焦模式（瞬态接管，移开即恢复聚焦压暗）
-          dimmed: hoverSet
-            ? hoverSet.has(n.id)
+          // 寻路 > hover 邻域 > 聚焦模式（上层模式瞬态接管）
+          dimmed: pathResult
+            ? pathResult.ids.has(n.id)
               ? 0
-              : HOVER_DIM
-            : focusSet && !focusSet.has(n.id)
-              ? FOCUS_DIM
-              : 0,
+              : FOCUS_DIM
+            : hoverSet
+              ? hoverSet.has(n.id)
+                ? 0
+                : HOVER_DIM
+              : focusSet && !focusSet.has(n.id)
+                ? FOCUS_DIM
+                : 0,
           highlighted: highlightId === n.id,
           focused: focusId === n.id,
           read: !!readMap[n.id],
+          inPath: pathResult?.ids.has(n.id) ?? false,
+          growing: timelinePlaying,
         },
       })),
-    [graph, isVisible, hoverSet, focusSet, highlightId, focusId, readMap],
+    [graph, isVisible, pathResult, hoverSet, focusSet, highlightId, focusId, readMap, timelinePlaying],
   )
 
   const visibleIds = useMemo(() => new Set(rfNodes.map((n) => n.id)), [rfNodes])
@@ -191,16 +213,24 @@ function GraphCanvas({ graph }: { graph: NonNullable<ReturnType<typeof useGraph>
     () =>
       graph.edges
         .filter((e) => visibleIds.has(e.source) && visibleIds.has(e.target))
-        .filter(
-          (e) =>
-            !(e.kind === 'tag' && filters.hideWeakEdges) &&
-            !(e.kind === 'tag' && zoom < WEAK_EDGE_ZOOM),
-        )
+        // 弱边按 zoom 渐进显示；但寻路模式下路径边始终可见（否则路径有线无图）
+        .filter((e) => {
+          if (e.kind !== 'tag') return true
+          if (filters.hideWeakEdges) return false
+          if (zoom >= WEAK_EDGE_ZOOM) return true
+          return pathResult?.edges.has([e.source, e.target].sort().join('|')) ?? false
+        })
         .map((e) => {
           const inFocus = focusSet && focusSet.has(e.source) && focusSet.has(e.target)
           const inHover = hoverSet && hoverSet.has(e.source) && hoverSet.has(e.target)
-          const emphasized = hoverSet ? !!inHover : !!inFocus
-          const dimmed = hoverSet ? !inHover : !!focusSet && !inFocus
+          const isPathEdge =
+            pathResult?.found && pathResult.edges.has([e.source, e.target].sort().join('|'))
+          const emphasized = pathResult ? isPathEdge : hoverSet ? !!inHover : !!inFocus
+          const dimmed = pathResult
+            ? !isPathEdge
+            : hoverSet
+              ? !inHover
+              : !!focusSet && !inFocus
           const base = e.kind === 'link' ? LINK_STYLE : TAG_STYLE
           return {
             id: `${e.kind}:${e.source}:${e.target}`,
@@ -215,7 +245,7 @@ function GraphCanvas({ graph }: { graph: NonNullable<ReturnType<typeof useGraph>
             interactionWidth: 0,
           }
         }),
-    [graph, visibleIds, filters.hideWeakEdges, focusSet, hoverSet, zoom],
+    [graph, visibleIds, filters.hideWeakEdges, pathResult, focusSet, hoverSet, zoom],
   )
 
   /* 初次从 hash / query 还原视图状态 */
@@ -270,17 +300,19 @@ function GraphCanvas({ graph }: { graph: NonNullable<ReturnType<typeof useGraph>
     scheduleHash()
   }, [filters, focusId, timelineDate, localMode, scheduleHash])
 
-  /* Esc 退出聚焦 / 局部模式 */
+  /* Esc 退出寻路 / 聚焦 / 局部模式 */
   useEffect(() => {
     const fn = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
-        if (useGraphStore.getState().focusId) setFocus(null)
-        else if (useGraphStore.getState().localMode) setLocalMode(null)
+        const s = useGraphStore.getState()
+        if (s.pathMode) setPathMode(null)
+        else if (s.focusId) setFocus(null)
+        else if (s.localMode) setLocalMode(null)
       }
     }
     window.addEventListener('keydown', fn)
     return () => window.removeEventListener('keydown', fn)
-  }, [setFocus, setLocalMode])
+  }, [setFocus, setLocalMode, setPathMode])
 
   const flyTo = useCallback(
     (n: GraphNodeData, zoom = 1.15) => {
@@ -296,6 +328,12 @@ function GraphCanvas({ graph }: { graph: NonNullable<ReturnType<typeof useGraph>
     (_: unknown, rfNode: Node) => {
       const n = byId.get(rfNode.id)
       if (!n) return
+      // 寻路模式：依次点选起点 / 终点（种子节点也允许，它们在图上是真实节点）
+      if (pathMode) {
+        if (!pathMode.from) setPathMode({ from: n.id, to: null })
+        else if (n.id !== pathMode.from) setPathMode({ from: pathMode.from, to: n.id })
+        return
+      }
       if (!n.exists) {
         setGhostToast({ nodeId: n.id, title: n.title })
         return
@@ -306,7 +344,7 @@ function GraphCanvas({ graph }: { graph: NonNullable<ReturnType<typeof useGraph>
       }
       navigate(`/p/${encodeURIComponent(n.id)}`)
     },
-    [byId, navigate, setGhostToast],
+    [byId, navigate, setGhostToast, pathMode, setPathMode],
   )
 
   const onNodeDoubleClick = useCallback(
@@ -334,6 +372,7 @@ function GraphCanvas({ graph }: { graph: NonNullable<ReturnType<typeof useGraph>
         onNodeDoubleClick={onNodeDoubleClick}
         onPaneClick={() => {
           setFocus(null)
+          setPathMode(null)
           setSheetNode(null)
         }}
         onMoveEnd={scheduleHash}
@@ -381,6 +420,43 @@ function GraphCanvas({ graph }: { graph: NonNullable<ReturnType<typeof useGraph>
           >
             聚焦：{byId.get(focusId)?.title ?? focusId} <X size={12} />
           </motion.button>
+        )}
+      </AnimatePresence>
+
+      {/* 寻路模式面包屑 */}
+      <AnimatePresence>
+        {pathMode && (
+          <motion.div
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0 }}
+            className="float-panel absolute left-1/2 top-[76px] -translate-x-1/2 flex items-center gap-2 px-4 py-2 text-xs text-ink-2"
+            style={{ zIndex: 20 }}
+          >
+            {!pathMode.from ? (
+              <span>寻路：请点选起点节点</span>
+            ) : !pathMode.to ? (
+              <span>
+                寻路：起点 <b className="text-ink">{byId.get(pathMode.from)?.title ?? pathMode.from}</b>
+                {' · '}请点选终点
+              </span>
+            ) : pathResult?.found ? (
+              <span>
+                路径：<b className="text-ink">{byId.get(pathMode.from)?.title}</b> ⇄{' '}
+                <b className="text-ink">{byId.get(pathMode.to)?.title}</b> · {pathResult.ids.size - 1} 跳
+              </span>
+            ) : (
+              <span>
+                『{byId.get(pathMode.from)?.title}』与『{byId.get(pathMode.to)?.title}』不连通
+              </span>
+            )}
+            <button
+              className="rounded-full border border-line px-2 py-0.5 hover:bg-paper-3"
+              onClick={() => setPathMode(null)}
+            >
+              退出
+            </button>
+          </motion.div>
         )}
       </AnimatePresence>
 
