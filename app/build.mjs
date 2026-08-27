@@ -2,7 +2,7 @@
 // 扫描 vault/posts/*.md → 解析 frontmatter + wikilinks → 生成边/占位节点
 // → 标签共现弱边 → d3-force 布局（300 ticks，旧坐标做初始值）
 // → 输出 public/data/graph.json、posts/<id>.json、tags.json
-import { readdir, readFile, writeFile, mkdir } from 'node:fs/promises';
+import { readdir, readFile, writeFile, mkdir, cp } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import { unified } from 'unified';
 import remarkParse from 'remark-parse';
@@ -11,6 +11,7 @@ import remarkWikiLink from 'remark-wiki-link';
 import { visit } from 'unist-util-visit';
 import * as yaml from 'js-yaml';
 import MarkdownIt from 'markdown-it';
+import { katex as mditKatex } from '@mdit/plugin-katex';
 import hljs from 'highlight.js';
 import {
   forceSimulation, forceLink, forceManyBody, forceCenter, forceCollide, forceX, forceY,
@@ -21,6 +22,7 @@ const OUT_DIR = 'public/data';
 // 子路径部署前缀（与 vite.config.ts 的 base 保持一致）；站点绝对地址用于 RSS
 const BASE_PATH = process.env.BASE_PATH ?? '/mansheng/';
 const SITE_URL = (process.env.SITE_URL ?? 'https://example.com').replace(/\/+$/, '');
+const IMG_RE = /\.(png|jpe?g|gif|webp|svg|avif|bmp)$/i;
 
 const md = new MarkdownIt({
   html: true, // vault 内容为可信源，允许内联 HTML（wikilink 替换产物）
@@ -30,19 +32,43 @@ const md = new MarkdownIt({
     if (lang && hljs.getLanguage(lang)) {
       return `<pre><code class="hljs language-${lang}">${hljs.highlight(code, { language: lang }).value}</code></pre>`;
     }
+    // 未知语言（如 mermaid）保留语言标记，交由客户端渲染
+    if (lang) {
+      return `<pre><code class="language-${lang}">${md.utils.escapeHtml(code)}</code></pre>`;
+    }
     return `<pre><code class="hljs">${md.utils.escapeHtml(code)}</code></pre>`;
   },
 });
+// 数学公式：构建期用 KaTeX 渲染成 HTML（零客户端 JS，样式见 main.tsx 引入的 katex.min.css）
+md.use(mditKatex, { throwOnError: false });
 
-// 把 [[target]] / [[target|display]] 替换为 <a class="wikilink" ...>
-function renderHtml(body, existsMap) {
-  const src = body.replace(/\[\[([^\]|]+)(?:\|([^\]]+))?\]\]/g, (_, target, display) => {
-    const id = target.trim();
+// 把 [[target]] / [[target|display]] 替换为 <a class="wikilink" ...>；
+// 支持 [[note#标题]]（剥离 fragment）与 ![[图片]] / ![[笔记]] 嵌入（笔记嵌入限深 2 层防环）
+function renderHtml(body, existsMap, embedStack = []) {
+  const withEmbeds = body.replace(/!\[\[([^\]|]+)(?:\|([^\]]+))?\]\]/g, (_, target, alt) => {
+    const id = target.split('#')[0].trim();
+    if (!id) return '';
+    if (IMG_RE.test(id)) {
+      const file = id.split('/').pop();
+      return `<img class="embed-img" src="${BASE_PATH}assets/${encodeURIComponent(file)}" alt="${(alt || '').trim()}" loading="lazy" />`;
+    }
+    if (!existsMap.get(id)) {
+      return `<span class="embed-seed">🌱 嵌入的『${id}』还是种子</span>`;
+    }
+    if (embedStack.includes(id) || embedStack.length >= 2) {
+      return `<span class="embed-seed">↻ 『${id}』循环引用，已略去</span>`;
+    }
+    const note = nodes.get(id);
+    const inner = renderHtml(note.body, existsMap, [...embedStack, id]);
+    return `<div class="embed-note"><div class="embed-note-title">嵌自 <a class="wikilink" data-target="${id}" href="${BASE_PATH}p/${encodeURIComponent(id)}">${note.title}</a></div>${inner}</div>`;
+  });
+  return md.render(withEmbeds.replace(/\[\[([^\]|]+)(?:\|([^\]]+))?\]\]/g, (_, target, display) => {
+    const id = target.split('#')[0].trim();
     const text = (display || target).trim();
+    if (!id) return text; // [[#本页锚点]] → 纯文本
     const ghost = existsMap.get(id) ? '' : ' wikilink--ghost';
     return `<a class="wikilink${ghost}" data-target="${id}" href="${BASE_PATH}p/${encodeURIComponent(id)}">${text}</a>`;
-  });
-  return md.render(src);
+  }));
 }
 
 // 纯文本（去 markdown 语法、去 wikilink 括号），用于 summary / context
@@ -60,6 +86,7 @@ const files = (await readdir(POSTS_DIR)).filter((f) => f.endsWith('.md'));
 const nodes = new Map();
 const edges = [];
 const seenEdge = new Set();
+const healthIssues = [];
 
 const addEdge = (source, target, kind) => {
   const key = `${source}->${target}`;
@@ -75,14 +102,35 @@ for (const f of files) {
   }).parse(raw);
 
   let front = {};
-  const links = [];
   visit(tree, (node) => {
     if (node.type === 'yaml') front = yaml.load(node.value) ?? {};
-    if (node.type === 'wikiLink') links.push(node.value.trim());
   });
 
-  const id = f.replace(/\.md$/, '');
+  // 记录 frontmatter 完整性（健康报告用）
+  const missing = [];
+  if (!front.title) missing.push('title');
+  if (!front.date) missing.push('date');
+  if (!front.tags?.length) missing.push('tags');
+  if (missing.length) healthIssues.push(`${f.replace(/\.md$/, '')} 缺字段：${missing.join('、')}`);
+
+  // 链接采集：图片嵌入 (![[x.png]]) 不参与建图，笔记嵌入 (![[note]]) 计入；
+  // [[note#标题]] 剥离 fragment
+  const links = [];
+  const embedNoteLinks = [];
   const body = raw.replace(/^---[\s\S]*?---\s*/, '');
+  const bodyNoImgEmbeds = body.replace(/!\[\[([^\]|]+)(?:\|([^\]]+))?\]\]/g, (_, t) => {
+    const id = t.split('#')[0].trim();
+    if (id && !IMG_RE.test(id)) embedNoteLinks.push(id);
+    return '';
+  });
+  const linkTree = unified().use(remarkParse).use(remarkWikiLink, { aliasDivider: '|' })
+    .parse(bodyNoImgEmbeds);
+  visit(linkTree, (node) => {
+    if (node.type === 'wikiLink') links.push(node.value.split('#')[0].trim());
+  });
+  links.push(...embedNoteLinks.map((id) => id.split('#')[0].trim()));
+
+  const id = f.replace(/\.md$/, '');
   nodes.set(id, {
     id,
     title: front.title ?? id,
@@ -91,7 +139,7 @@ for (const f of files) {
     date: front.date ? String(front.date) : '',
     draft: front.draft === true,
     exists: true,
-    links: [...new Set(links)].filter((t) => t !== id),
+    links: [...new Set(links)].filter((t) => t && t !== id),
     body,
   });
 }
@@ -228,6 +276,9 @@ for (const e of edges) {
 }
 
 await mkdir(`${OUT_DIR}/posts`, { recursive: true });
+// Obsidian 附件目录同步到 public/assets（![[图片]] 嵌入的落点）
+await mkdir('public', { recursive: true });
+await cp('vault/assets', 'public/assets', { recursive: true });
 
 for (const n of nodes.values()) {
   if (!n.exists || n.draft) continue;
@@ -316,3 +367,25 @@ const tagEdges = edges.length - linkEdges;
 console.log(`nodes: ${graphNodes.length} (ghost: ${graphNodes.filter((n) => !n.exists).length})`);
 console.log(`edges: ${edges.length} (link: ${linkEdges}, tag: ${tagEdges})`);
 console.log(`tags: ${tagsSorted.length}, posts written: ${graphNodes.filter((n) => n.exists).length}`);
+
+// ---------- 8. 内容健康报告 ----------
+const existsNodes = graphNodes.filter((n) => n.exists);
+const orphans = existsNodes.filter((n) => n.degree === 0);
+const ghostsByRefs = graphNodes
+  .filter((n) => !n.exists)
+  .map((g) => ({ id: g.id, refs: edges.filter((e) => e.kind === 'link' && e.target === g.id).length }))
+  .sort((a, b) => b.refs - a.refs);
+console.log('\n── 内容健康报告 ─────────────────────');
+if (orphans.length) {
+  console.warn(`⚠ 孤儿节点 ${orphans.length}：${orphans.map((o) => o.id).join('、')}（无任何连接）`);
+} else {
+  console.log('✓ 无孤儿节点');
+}
+if (ghostsByRefs.length) {
+  console.log(`ℹ 种子节点 ${ghostsByRefs.length}，被引最多：${ghostsByRefs.slice(0, 3).map((g) => `${g.id}(${g.refs}篇)`).join('、')}`);
+}
+if (healthIssues.length) {
+  for (const issue of healthIssues) console.warn(`✎ ${issue}`);
+} else {
+  console.log('✓ frontmatter 完整');
+}

@@ -47,6 +47,14 @@ const ARTICLE_CSS = `
 .post-body hr { border: none; border-top: 1px solid ${C.line}; margin: 48px 0; }
 .post-body .code-copy { position: absolute; top: 8px; right: 8px; font-family: "Noto Sans SC",sans-serif; font-size: .7rem; color: ${C.ink3}; background: ${C.paper}; border: 1px solid ${C.line}; border-radius: 6px; padding: 2px 8px; opacity: 0; transition: opacity .15s; cursor: pointer; }
 .post-body pre:hover .code-copy { opacity: 1; }
+.post-body img.embed-img { border-radius: 10px; max-width: 100%; margin: .4em auto; display: block; border: 1px solid ${C.line}; }
+.post-body .embed-note { background: ${C.paper2}; border: 1px solid ${C.line}; border-left: 3px solid ${C.ochre}; border-radius: 0 10px 10px 0; padding: 12px 16px; margin: 0 0 1.2em; }
+.post-body .embed-note-title { font-family: "Noto Sans SC",sans-serif; font-size: .72rem; letter-spacing: .06em; color: ${C.ink3}; margin-bottom: 8px; }
+.post-body .embed-seed { display: inline-block; font-size: .85em; color: ${C.ink3}; border: 1px dashed ${C.lineStrong}; border-radius: 6px; padding: 2px 10px; }
+.post-body .mermaid-embed { display: flex; justify-content: center; background: ${C.paper2}; border: 1px solid ${C.line}; border-radius: 10px; padding: 16px; margin: 0 0 1.2em; overflow-x: auto; }
+.post-body .mermaid-embed svg { max-width: 100%; height: auto; }
+.post-body .katex-display { overflow-x: auto; overflow-y: hidden; padding: 4px 0; }
+.post-body .katex { font-size: 1.05em; }
 `
 
 export default function PostPage() {
@@ -144,6 +152,40 @@ export default function PostPage() {
       btn.textContent = '复制'
       pre.appendChild(btn)
     })
+    // mermaid 图表：懒加载渲染（仅当文章含 diagram 时才拉取 chunk；语法错误保留源码）
+    const mmdCodes = Array.from(el.querySelectorAll('pre > code.language-mermaid'))
+    if (mmdCodes.length) {
+      import('mermaid')
+        .then(async ({ default: mermaid }) => {
+          mermaid.initialize({
+            startOnLoad: false,
+            securityLevel: 'strict',
+            theme: 'base',
+            themeVariables: {
+              primaryColor: '#F1EBE0',
+              primaryBorderColor: '#A45A3C',
+              primaryTextColor: '#2E2A24',
+              lineColor: '#B09B7E',
+              secondaryColor: '#EAE2D3',
+              tertiaryColor: '#F7F3EC',
+              fontFamily: '"Noto Sans SC", sans-serif',
+            },
+          })
+          let i = 0
+          for (const code of mmdCodes) {
+            try {
+              const { svg } = await mermaid.render(`mmd-${i++}`, code.textContent ?? '')
+              const holder = document.createElement('div')
+              holder.className = 'mermaid-embed'
+              holder.innerHTML = svg
+              code.closest('pre')?.replaceWith(holder)
+            } catch {
+              /* 语法错误：保留 hljs 源码展示 */
+            }
+          }
+        })
+        .catch(() => {})
+    }
     return () => el.removeEventListener('click', onClick)
   }, [post, navigate, showHint])
 
