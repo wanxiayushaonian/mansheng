@@ -94,3 +94,12 @@
 - 随机漫游骰子按钮；图谱节点可聚焦（Enter/Space 触发、focus ring、aria-label）
 - PWA：手写 sw（指纹资源 cache-first / 页面数据 network-first + 离线回退）+ manifest + 构建期截图生成品牌图标；仅生产注册
 - vitest 集成测试（fixture vault + spawn build.mjs）：公式/嵌入建边语义/fragment/breaks/TOC/健康报告 8 例
+
+## Stage 12 — 工程收尾：可维护性重构（2026-08-28）
+
+- chrome.tsx（462 行杂物抽屉，14 个 lint 错误的根源）解散：lib/content（类型+取数）、lib/ui（C token）、lib/colors（配色单一来源），组件按单文件单职责落位 components/
+- PostPage 681→326、GraphPage 610→63（graph/GraphCanvas 399 + GraphOverlays + viewHash）、build.mjs 405→339（scripts/emit-extras.mjs）
+- 双取数层合并：hooks/useGraph 走 lib/content 单一缓存入口；types/graph 收编第二套 GraphData/Post 定义
+- eslint 23→**0 错 0 警**（About 随机改点击时取、Comments ref 模式）
+- CI 新增 verify job：eslint + vitest 全过才构建部署
+- 全文件回到 200-400 行规范内；重构后明暗两主题视觉回归通过
