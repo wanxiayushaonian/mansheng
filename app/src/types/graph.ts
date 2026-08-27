@@ -1,4 +1,4 @@
-/** graph.json / posts / tags 类型定义 */
+/** graph.json / posts / tags 类型定义（全站唯一类型源，lib/content 转发引用） */
 
 export type NodeType = 'post' | 'essay' | 'note'
 
@@ -8,7 +8,8 @@ export interface GraphNodeData {
   type: NodeType
   tags: string[]
   degree: number
-  date: string | null
+  /** ISO 日期；种子节点为空串 */
+  date: string
   x: number
   y: number
   exists: boolean
@@ -38,8 +39,15 @@ export interface PostData {
   title: string
   type: NodeType
   tags: string[]
-  date: string | null
+  date: string
   html: string
-  links: { id: string; title: string; exists: boolean }[]
+  /** 文章目录（构建期从 h2/h3 提取） */
+  toc?: { id: string; text: string; level: number }[]
+  outgoing: { id: string; title: string; exists: boolean }[]
   backlinks: { id: string; title: string; context: string }[]
 }
+
+/* ---- 简短别名（内容页历史命名） ---- */
+export type GraphNode = GraphNodeData
+export type GraphEdge = GraphEdgeData
+export type Post = PostData

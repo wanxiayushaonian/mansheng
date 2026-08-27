@@ -4,7 +4,9 @@
  * 供各文章页 og:image 使用。人直接访问时卡片显示在纸底左上角。
  */
 import { useParams } from 'react-router-dom'
-import { C, tagColor, htmlToText } from './chrome'
+import { C } from '@/lib/ui'
+import { tagColor } from '@/lib/colors'
+import { htmlToText } from '@/lib/content'
 import { usePost } from '@/hooks/usePost'
 import paperTexture from '@/assets/paper-texture.png'
 

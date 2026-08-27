@@ -3,11 +3,15 @@
  * 什么是数字花园 / 图例卡 / 写作→构建→漫游流程卡 / 进入图谱 CTA。
  */
 import { useEffect, useMemo, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Move, ZoomIn, MousePointer, MousePointerClick, Sprout, PenLine, Cog, Compass } from 'lucide-react'
-import { C, DiamondDivider, PageChrome, fetchGraph, useLenis } from './chrome'
-import type { GraphData } from './chrome'
+import { DiamondDivider } from '@/components/DiamondDivider'
+import { PageChrome } from '@/components/PageChrome'
+import { useLenis } from '@/hooks/useLenis'
+import { fetchGraph } from '@/lib/content'
+import type { GraphData } from '@/lib/content'
+import { C } from '@/lib/ui'
 import { useDocumentMeta } from '@/hooks/useDocumentMeta'
 
 const EASE: [number, number, number, number] = [0.22, 0.8, 0.32, 1]
@@ -43,13 +47,10 @@ export default function AboutPage() {
     }
   }, [graph])
 
-  const randomEntry = useMemo(() => {
-    if (!graph) return null
-    const existing = graph.nodes.filter((n) => n.exists)
-    if (!existing.length) return null
-    return [...existing].sort((a, b) => b.degree - a.degree)[
-      Math.floor(Math.random() * Math.min(5, existing.length))
-    ]
+  // 「随便读一篇」：点击时从连接最多的前 5 篇里随机挑（渲染保持纯函数）
+  const hotEntries = useMemo(() => {
+    if (!graph) return []
+    return [...graph.nodes.filter((n) => n.exists)].sort((a, b) => b.degree - a.degree).slice(0, 5)
   }, [graph])
 
   return (
@@ -151,15 +152,19 @@ export default function AboutPage() {
           >
             进入图谱 →
           </motion.button>
-          {randomEntry && (
+          {hotEntries.length > 0 && (
             <div className="mt-5">
-              <Link
-                to={`/p/${encodeURIComponent(randomEntry.id)}`}
+              <button
+                type="button"
                 className="text-sm"
                 style={{ color: C.accent }}
+                onClick={() => {
+                  const pick = hotEntries[Math.floor(Math.random() * hotEntries.length)]
+                  if (pick) navigate(`/p/${encodeURIComponent(pick.id)}`)
+                }}
               >
                 或随便读一篇 →
-              </Link>
+              </button>
             </div>
           )}
         </motion.div>

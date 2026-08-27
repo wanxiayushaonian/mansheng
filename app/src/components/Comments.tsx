@@ -7,7 +7,7 @@
  *   VITE_GISCUS_CATEGORY_ID giscus.app 生成的 categoryId
  */
 import { useEffect, useRef } from 'react'
-import { C } from '../pages/chrome'
+import { C } from '@/lib/ui'
 
 export default function Comments({ title }: { title: string }) {
   const ref = useRef<HTMLDivElement>(null)
@@ -18,7 +18,8 @@ export default function Comments({ title }: { title: string }) {
     const repoId = env.VITE_GISCUS_REPO_ID as string | undefined
     const category = (env.VITE_GISCUS_CATEGORY as string | undefined) ?? 'Announcements'
     const categoryId = env.VITE_GISCUS_CATEGORY_ID as string | undefined
-    if (!ref.current || !repo || !repoId || !categoryId) return
+    const node = ref.current
+    if (!node || !repo || !repoId || !categoryId) return
 
     const script = document.createElement('script')
     script.src = 'https://giscus.app/client.js'
@@ -38,9 +39,9 @@ export default function Comments({ title }: { title: string }) {
       'data-lang': 'zh-CN',
     }
     for (const [k, v] of Object.entries(attrs)) script.setAttribute(k, v)
-    ref.current.appendChild(script)
+    node.appendChild(script)
     return () => {
-      ref.current?.replaceChildren()
+      node.replaceChildren()
     }
   }, [title])
 

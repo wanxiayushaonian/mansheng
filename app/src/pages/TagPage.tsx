@@ -6,11 +6,14 @@ import { useMemo, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { List, Waypoints, ChevronDown, Sprout } from 'lucide-react'
-import {
-  C, MiniGraph, PageChrome, TagChip, fetchGraph, fetchTags, nodeColor, tagColor,
-  useLenis,
-} from './chrome'
-import type { GraphData, GraphNode, TagInfo } from './chrome'
+import { MiniGraph } from '@/components/MiniGraph'
+import { PageChrome } from '@/components/PageChrome'
+import { TagPill } from '@/components/TagPill'
+import { useLenis } from '@/hooks/useLenis'
+import { fetchGraph, fetchTags } from '@/lib/content'
+import type { GraphData, GraphNode, TagInfo } from '@/lib/content'
+import { C } from '@/lib/ui'
+import { nodeColor, tagColor } from '@/lib/colors'
 import { useDocumentMeta } from '@/hooks/useDocumentMeta'
 import { useGraphStore } from '@/store'
 import { useEffect } from 'react'
@@ -273,7 +276,7 @@ export default function TagPage() {
                 transition={{ duration: 0.22, delay: i * 0.02 }}
                 whileHover={{ y: -2 }}
               >
-                <TagChip
+                <TagPill
                   name={`${t.name} ${t.count}`}
                   color={tagColor(t.name)}
                   active={t.name === tagName}
@@ -357,7 +360,7 @@ function PostCard({
       <div className="mt-3 flex gap-2">
         {node.tags.filter((t) => t !== currentTag).slice(0, 2).map((t) => (
           <span key={t} onClick={(e) => e.stopPropagation()}>
-            <TagChip name={t} color={tagColor(t)} />
+            <TagPill name={t} color={tagColor(t)} />
           </span>
         ))}
       </div>
