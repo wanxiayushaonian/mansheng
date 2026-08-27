@@ -76,3 +76,12 @@
 - 全文搜索：build.mjs 生成 search-index.json（原始文档），前端 minisearch + CJK 单字/bigram 分词（src/lib/searchTokenize.ts，与构建端注释约定同步），SearchBox 升级——懒加载索引、正文片段 mark 高亮、种子节点标题兜底，成文结果直接进文章页
 - og:image：新增 /og/:id 分享卡路由（1200×630 品牌卡），prerender.mjs 以 CDP setDeviceMetricsOverride 截图 27 张 → dist/og/<id>.png；useDocumentMeta 支持 image 选项，文章页指向专属卡；htmlToText 统一实体解码
 - 已读标记：store readMap 持久化 localStorage（mansheng.read）；PostPage 驻留 5s 或滚动 60% 记已读；图谱已读节点去饱和（40% 混纸色）+ 标签页标题变淡；过滤面板显示已读计数
+
+## Stage 10 — 写作能力与图谱玩味（2026-08-27）
+
+- 数学公式：@mdit/plugin-katex 构建期渲染（零客户端 JS），katex.min.css 自托管
+- Obsidian 嵌入：`![[图片]]`（vault/assets 同步 public/assets）、`![[笔记]]` 段落嵌入（防环限深 2）；`[[note#标题]]` 剥离 fragment；图片嵌入不建边、笔记嵌入建边
+- Mermaid：客户端懒加载渲染（含图文章节才拉 chunk），纸色主题；未知语言保留 language class
+- 内容健康报告：构建日志输出孤儿节点 / 高被引种子 / frontmatter 缺字段
+- 最短路径：寻路模式（FilterPanel 入口）点选两点 BFS 高亮，路径弱边豁免 zoom 过滤，面包屑显示跳数
+- 生长动画：时间轴播放时新节点 spring 入场（逐月发芽）
