@@ -85,3 +85,12 @@
 - 内容健康报告：构建日志输出孤儿节点 / 高被引种子 / frontmatter 缺字段
 - 最短路径：寻路模式（FilterPanel 入口）点选两点 BFS 高亮，路径弱边豁免 zoom 过滤，面包屑显示跳数
 - 生长动画：时间轴播放时新节点 spring 入场（逐月发芽）
+
+## Stage 11 — 路线图收官（2026-08-27）
+
+- TOC 大纲：构建期 h2/h3 注入锚点并提取 toc；≥1200px 右栏滚动高亮目录
+- giscus 评论：VITE_GISCUS_* 环境变量齐备才渲染（README 有启用步骤）
+- 暗色模式：[data-theme=dark] 夜间墨色 token 集；chrome.tsx 调色常量改引 CSS 变量（全站内联样式自动适配）；TopBar 切换 + localStorage + prefers 兜底；节点混色/MiniMap/背景点随主题
+- 随机漫游骰子按钮；图谱节点可聚焦（Enter/Space 触发、focus ring、aria-label）
+- PWA：手写 sw（指纹资源 cache-first / 页面数据 network-first + 离线回退）+ manifest + 构建期截图生成品牌图标；仅生产注册
+- vitest 集成测试（fixture vault + spawn build.mjs）：公式/嵌入建边语义/fragment/breaks/TOC/健康报告 8 例
