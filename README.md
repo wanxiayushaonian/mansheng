@@ -26,6 +26,13 @@ npm run build      # 数据管线 + tsc + vite build + 预渲染 → dist/
 npm run preview    # 本地预览构建产物
 ```
 
+## 写作工作流（Obsidian）
+
+用 Obsidian「打开文件夹作为库」选择 `app/vault`：`posts/` 里的文章、`[[wikilink]]`
+互链、frontmatter properties 全部原生可用，附件自动存入 `assets/`。
+写完 push 到 master 即自动构建上线。`[[不存在的链接]]` 会作为"种子节点"
+出现在图谱上，等它被写出来。
+
 ## 部署配置
 
 子路径由 `BASE_PATH`（默认 `/mansheng/`）贯穿 vite / build.mjs / prerender 三处；

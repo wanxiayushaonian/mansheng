@@ -25,6 +25,7 @@ const SITE_URL = (process.env.SITE_URL ?? 'https://example.com').replace(/\/+$/,
 const md = new MarkdownIt({
   html: true, // vault 内容为可信源，允许内联 HTML（wikilink 替换产物）
   linkify: true,
+  breaks: true, // 对齐 Obsidian 默认行为：单个换行渲染为 <br>（写作端所见即所得）
   highlight(code, lang) {
     if (lang && hljs.getLanguage(lang)) {
       return `<pre><code class="hljs language-${lang}">${hljs.highlight(code, { language: lang }).value}</code></pre>`;
